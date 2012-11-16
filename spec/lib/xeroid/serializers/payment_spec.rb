@@ -15,16 +15,15 @@ module Xeroid::Serializers
     end
 
     before(:all) do
-      # @validator = Nokogiri::XML::Schema(File.open(schema_dir.join("Payment.xsd")))
+      @validator = Nokogiri::XML::Schema(File.open(schema_dir.join("Payment.xsd")))
     end
 
     it "produces a valid XML document given a single, minimal, Account object" do
       account = ::Xeroid::Objects::Account.new(code: "NWBC")
-      invoice = ::Xeroid::Objects::Invoice.new(id: "abcde-12345-abcde-12345")
+      invoice = ::Xeroid::Objects::Invoice.new(id: "abcdef12-1234-abcd-1234-abcdef123456")
       payment = ::Xeroid::Objects::Payment.new(invoice: invoice, account: account, amount: BigDecimal.new("10"), date: Date.parse("2012-11-15"))
       xml = Payment.serialize(payment)
-      p xml
-      # @vaidator.valid?(xml).should be_true
+      @validator.valid?(Nokogiri::XML(xml)).should be_true
     end
   end
 end
