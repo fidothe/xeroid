@@ -16,6 +16,9 @@ module Xeroid
             end
             xml.Date payment.date.strftime("%Y-%m-%dT00:00:00")
             xml.Amount payment.amount.to_s
+            if payment.currency_rate
+              xml.CurrencyRate payment.currency_rate
+            end
           end
         end
 

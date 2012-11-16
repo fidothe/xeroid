@@ -28,5 +28,18 @@ module Xeroid::Objects
     it "can return its amount" do
       payment.amount.should == amount
     end
+
+    it "returns nil for currency_rate by default" do
+      payment.currency_rate.should be_nil
+    end
+
+    context "with currency_rate" do
+      let(:currency_rate) { BigDecimal.new("1.2") }
+      let(:payment) { Payment.new(invoice: invoice, account: account, amount: amount, date: date, currency_rate: currency_rate) }
+
+      it "can return its currency_rate" do
+        payment.currency_rate.should == currency_rate
+      end
+    end
   end
 end
