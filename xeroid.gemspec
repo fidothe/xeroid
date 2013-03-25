@@ -32,6 +32,7 @@ EOD
 
   gem.add_dependency 'oauth', '~> 0.4.7'
   gem.add_dependency 'builder', '~> 3.2.0'
+  gem.add_dependency 'nokogiri', '~> 1.5.0'
 
   gem.add_development_dependency 'rspec', '~> 2.0'
 end
