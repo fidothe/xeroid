@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'date'
 require 'bigdecimal'
 
 require 'xeroid/objects/invoice'
