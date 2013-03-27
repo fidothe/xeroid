@@ -3,6 +3,7 @@ module Xeroid
     class Invoice
       module Status
         DRAFT = 1
+        SUBMITTED = 2
       end
 
       module LineAmounts
@@ -11,9 +12,10 @@ module Xeroid
 
       ACCPAY = 1
 
-      ATTRS = [:id, :contact, :type, :line_items, :date, :due_date]
+      SIMPLE_ATTRS = [:id, :contact, :type, :line_items, :date, :due_date]
+      ATTRS = SIMPLE_ATTRS + [:status]
 
-      attr_reader *ATTRS
+      attr_reader *SIMPLE_ATTRS
 
       def initialize(attributes)
         attributes.each do |key, value|
@@ -22,7 +24,7 @@ module Xeroid
       end
 
       def status
-        Status::DRAFT
+        @status ||= Status::DRAFT
       end
 
       def line_amount_type

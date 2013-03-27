@@ -59,5 +59,17 @@ module Xeroid::Objects
         invoice.line_amount_type.should == Invoice::LineAmounts::EXCLUSIVE
       end
     end
+
+    describe "status" do
+      it "can have its status set to DRAFT" do
+        invoice = Invoice.new(status: Invoice::Status::DRAFT)
+        invoice.status.should == Invoice::Status::DRAFT
+      end
+
+      it "can have its status set to SUBMITTED" do
+        invoice = Invoice.new(status: Invoice::Status::SUBMITTED)
+        invoice.status.should == Invoice::Status::SUBMITTED
+      end
+    end
   end
 end
