@@ -2,15 +2,15 @@ module Xeroid
   module Objects
     class Invoice
       module Status
-        DRAFT = 1
-        SUBMITTED = 2
+        DRAFT = :draft
+        SUBMITTED = :submitted
       end
 
       module LineAmounts
-        EXCLUSIVE = 1
+        EXCLUSIVE = :exclusive
       end
 
-      ACCPAY = 1
+      ACCPAY = :accpay
 
       SIMPLE_ATTRS = [:id, :contact, :type, :line_items, :date, :due_date]
       ATTRS = SIMPLE_ATTRS + [:status]
