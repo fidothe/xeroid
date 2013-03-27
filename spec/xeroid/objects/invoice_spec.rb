@@ -70,6 +70,11 @@ module Xeroid::Objects
         invoice = Invoice.new(status: Invoice::Status::SUBMITTED)
         invoice.status.should == Invoice::Status::SUBMITTED
       end
+
+      it "can have its status set to AUTHORISED" do
+        invoice = Invoice.new(status: Invoice::Status::AUTHORISED)
+        invoice.status.should == Invoice::Status::AUTHORISED
+      end
     end
   end
 end

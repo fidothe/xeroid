@@ -4,6 +4,7 @@ module Xeroid
       module Status
         DRAFT = :draft
         SUBMITTED = :submitted
+        AUTHORISED = :authorised
       end
 
       module LineAmounts
