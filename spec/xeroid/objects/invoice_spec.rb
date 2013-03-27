@@ -38,5 +38,26 @@ module Xeroid::Objects
         invoice.status.should == Invoice::Status::DRAFT
       end
     end
+
+    describe "the minimum recommended for a new invoice" do
+      let(:contact) { stub('Contact') }
+      let(:line_item) { stub('LineItem') }
+      let(:date) { Date.new(2013, 3, 27) }
+      let(:due_date) { Date.new(2013, 4, 27) }
+
+      let(:attrs) { {type: Invoice::ACCPAY, contact: contact, line_items: [line_item], date: date, due_date: due_date} }
+
+      it "can return its date" do
+        invoice.date.should == date
+      end
+
+      it "can return its due date" do
+        invoice.due_date.should == due_date
+      end
+
+      it "has a line_amount_type of Invoice::LineAmounts::EXCLUSIVE" do
+        invoice.line_amount_type.should == Invoice::LineAmounts::EXCLUSIVE
+      end
+    end
   end
 end

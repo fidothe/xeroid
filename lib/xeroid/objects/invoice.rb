@@ -5,9 +5,13 @@ module Xeroid
         DRAFT = 1
       end
 
+      module LineAmounts
+        EXCLUSIVE = 1
+      end
+
       ACCPAY = 1
 
-      ATTRS = [:id, :contact, :type, :line_items]
+      ATTRS = [:id, :contact, :type, :line_items, :date, :due_date]
 
       attr_reader *ATTRS
 
@@ -19,6 +23,10 @@ module Xeroid
 
       def status
         Status::DRAFT
+      end
+
+      def line_amount_type
+        LineAmounts::EXCLUSIVE
       end
     end
   end
