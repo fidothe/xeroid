@@ -85,6 +85,10 @@ module Xeroid::Objects
         invoice = Invoice.new(status: Invoice::Status::DELETED)
         invoice.status.should == Invoice::Status::DELETED
       end
+
+      it "cannot have its status set to anything else" do
+        expect { Invoice.new(status: "Absurd") }.to raise_error(Invoice::InvalidStatus)
+      end
     end
   end
 end
