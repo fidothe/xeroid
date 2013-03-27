@@ -75,6 +75,16 @@ module Xeroid::Objects
         invoice = Invoice.new(status: Invoice::Status::AUTHORISED)
         invoice.status.should == Invoice::Status::AUTHORISED
       end
+
+      it "can have its status set to VOIDED" do
+        invoice = Invoice.new(status: Invoice::Status::VOIDED)
+        invoice.status.should == Invoice::Status::VOIDED
+      end
+
+      it "can have its status set to DELETED" do
+        invoice = Invoice.new(status: Invoice::Status::DELETED)
+        invoice.status.should == Invoice::Status::DELETED
+      end
     end
   end
 end

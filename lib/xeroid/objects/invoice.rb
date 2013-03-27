@@ -5,6 +5,8 @@ module Xeroid
         DRAFT = :draft
         SUBMITTED = :submitted
         AUTHORISED = :authorised
+        VOIDED = :voided
+        DELETED = :deleted
       end
 
       module LineAmounts
