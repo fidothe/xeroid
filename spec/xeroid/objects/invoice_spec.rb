@@ -33,6 +33,10 @@ module Xeroid::Objects
       it "can return its line items" do
         invoice.line_items.should == [line_item]
       end
+
+      it "has a status of Invoice::Status::DRAFT" do
+        invoice.status.should == Invoice::Status::DRAFT
+      end
     end
   end
 end
