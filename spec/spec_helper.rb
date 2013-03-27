@@ -15,3 +15,11 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = 'random'
 end
+
+require 'yaml'
+
+module Credentials
+  def self.fetch
+    @credentials ||= YAML.load_file(File.expand_path('../credentials.yml', __FILE__))
+  end
+end
