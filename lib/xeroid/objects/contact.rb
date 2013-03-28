@@ -5,7 +5,7 @@ module Xeroid
     class Contact
       include InitializeAttributes
 
-      SIMPLE_ATTRS = [:name]
+      SIMPLE_ATTRS = [:name, :first_name, :last_name]
 
       attr_reader *SIMPLE_ATTRS
 
