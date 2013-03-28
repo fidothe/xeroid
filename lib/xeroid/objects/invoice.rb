@@ -1,9 +1,9 @@
-require 'xeroid/objects/initialize_attributes'
+require 'xeroid/objects/attributes'
 
 module Xeroid
   module Objects
     class Invoice
-      include InitializeAttributes
+      include Attributes
 
       module Status
         DRAFT = :draft
@@ -33,14 +33,8 @@ module Xeroid
         class Invalid < StandardError; end
       end
 
-      SIMPLE_ATTRS = [:id, :contact, :type, :line_items, :date, :due_date]
-      RESTRICTIONS = {:type => Type, :status => Status}
-
-      attr_reader *SIMPLE_ATTRS
-
-      def initialize(attributes)
-        initialize_attributes(attributes, SIMPLE_ATTRS, RESTRICTIONS)
-      end
+      attribute :id, :contact, :line_items, :date, :due_date
+      constrained :type => Type, :status => Status
 
       def status
         @status ||= Status::DRAFT
