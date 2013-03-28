@@ -11,13 +11,16 @@ module Xeroid
         VALID = [DRAFT, SUBMITTED, AUTHORISED, VOIDED, DELETED]
       end
 
+      # whether the invoice's line item amounts are exclusive or inclusive of sales tax
       module LineAmounts
         EXCLUSIVE = :exclusive
       end
 
       class InvalidStatus < StandardError; end
 
+      # the two invoice types
       ACCPAY = :accpay
+      ACCREC = :accrec
 
       SIMPLE_ATTRS = [:id, :contact, :type, :line_items, :date, :due_date]
 

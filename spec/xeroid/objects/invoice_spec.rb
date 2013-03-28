@@ -60,6 +60,18 @@ module Xeroid::Objects
       end
     end
 
+    describe "invoice type" do
+      it "can have its type set to ACCPAY" do
+        invoice = Invoice.new(type: Invoice::ACCPAY)
+        invoice.type.should == Invoice::ACCPAY
+      end
+
+      it "can have its type set to ACCREC" do
+        invoice = Invoice.new(type: Invoice::ACCREC)
+        invoice.type.should == Invoice::ACCREC
+      end
+    end
+
     describe "status" do
       it "can have its status set to DRAFT" do
         invoice = Invoice.new(status: Invoice::Status::DRAFT)
