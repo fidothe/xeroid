@@ -16,9 +16,11 @@ module Xeroid
           end
         end
 
-        def attribute(name)
-          attr_reader name
-          untyped_attrs << name
+        def attribute(*names)
+          names.each do |name|
+            attr_reader name
+            untyped_attrs << name
+          end
         end
 
         def typed_attrs

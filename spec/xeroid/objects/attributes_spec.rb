@@ -50,6 +50,19 @@ module Xeroid::Objects
         object = klass.new(thing: BigDecimal.new("20.00"))
         object.thing.should == BigDecimal.new("20.00")
       end
+
+      describe "passing multiple attribute names" do
+        let(:klass) { Class.new { include Attributes; attribute(:this, :that) } }
+        let(:instance) { klass.new(this: BigDecimal.new("10.00"), that: "Value") }
+
+        it "sets the right value for 'this'" do
+          instance.this.should == BigDecimal.new("10.00")
+        end
+
+        it "sets the right value for 'that'" do
+          instance.that.should == "Value"
+        end
+      end
     end
   end
 end
