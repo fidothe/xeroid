@@ -1,6 +1,10 @@
+require 'xeroid/objects/initialize_attributes'
+
 module Xeroid
   module Objects
     class Invoice
+      include InitializeAttributes
+
       module Status
         DRAFT = :draft
         SUBMITTED = :submitted
@@ -34,15 +38,7 @@ module Xeroid
       attr_reader *SIMPLE_ATTRS
 
       def initialize(attributes)
-        restricted_attrs = RESTRICTIONS.keys
-        attributes.each do |key, value|
-          if restricted_attrs.include?(key)
-            attr = RESTRICTIONS[key]
-            raise attr::Invalid unless attr::VALID.include?(value)
-            instance_variable_set("@#{key}".to_sym, value)
-          end
-          instance_variable_set("@#{key}".to_sym, value) if SIMPLE_ATTRS.include?(key)
-        end
+        initialize_attributes(attributes, SIMPLE_ATTRS, RESTRICTIONS)
       end
 
       def status
