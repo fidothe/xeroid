@@ -9,6 +9,8 @@ module Xeroid
         DELETED = :deleted
 
         VALID = [DRAFT, SUBMITTED, AUTHORISED, VOIDED, DELETED]
+
+        class Invalid < StandardError; end
       end
 
       # whether the invoice's line item amounts are exclusive or inclusive of sales tax
@@ -16,24 +18,27 @@ module Xeroid
         EXCLUSIVE = :exclusive
       end
 
-      class InvalidStatus < StandardError; end
-      class InvalidType < StandardError; end
-
       # the two invoice types
-      ACCPAY = :accpay
-      ACCREC = :accrec
+      module Type
+        ACCPAY = :accpay
+        ACCREC = :accrec
+
+        VALID = [ACCPAY, ACCREC]
+
+        class Invalid < StandardError; end
+      end
 
       SIMPLE_ATTRS = [:id, :contact, :type, :line_items, :date, :due_date]
-      RESTRICTIONS = {:type => [[ACCPAY, ACCREC], InvalidType], :status => [Status::VALID, InvalidStatus]}
-      RESTRICTED_ATTRS = RESTRICTIONS.keys
+      RESTRICTIONS = {:type => Type, :status => Status}
 
       attr_reader *SIMPLE_ATTRS
 
       def initialize(attributes)
+        restricted_attrs = RESTRICTIONS.keys
         attributes.each do |key, value|
-          if RESTRICTED_ATTRS.include?(key)
-            valid_values, error_class = RESTRICTIONS[key]
-            raise error_class unless valid_values.include?(value)
+          if restricted_attrs.include?(key)
+            attr = RESTRICTIONS[key]
+            raise attr::Invalid unless attr::VALID.include?(value)
             instance_variable_set("@#{key}".to_sym, value)
           end
           instance_variable_set("@#{key}".to_sym, value) if SIMPLE_ATTRS.include?(key)

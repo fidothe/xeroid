@@ -16,14 +16,14 @@ module Xeroid::Objects
     describe "the minimum required for a new draft payable invoice" do
       let(:contact) { stub('Contact') }
       let(:line_item) { stub('LineItem') }
-      let(:attrs) { {type: Invoice::ACCPAY, contact: contact, line_items: [line_item]} }
+      let(:attrs) { {type: Invoice::Type::ACCPAY, contact: contact, line_items: [line_item]} }
 
       it "has no id" do
         invoice.id.should be_nil
       end
 
       it "can return its type" do
-        invoice.type.should == Invoice::ACCPAY
+        invoice.type.should == Invoice::Type::ACCPAY
       end
 
       it "can return its contact" do
@@ -45,7 +45,7 @@ module Xeroid::Objects
       let(:date) { Date.new(2013, 3, 27) }
       let(:due_date) { Date.new(2013, 4, 27) }
 
-      let(:attrs) { {type: Invoice::ACCPAY, contact: contact, line_items: [line_item], date: date, due_date: due_date} }
+      let(:attrs) { {type: Invoice::Type::ACCPAY, contact: contact, line_items: [line_item], date: date, due_date: due_date} }
 
       it "can return its date" do
         invoice.date.should == date
@@ -62,17 +62,17 @@ module Xeroid::Objects
 
     describe "invoice type" do
       it "can have its type set to ACCPAY" do
-        invoice = Invoice.new(type: Invoice::ACCPAY)
-        invoice.type.should == Invoice::ACCPAY
+        invoice = Invoice.new(type: Invoice::Type::ACCPAY)
+        invoice.type.should == Invoice::Type::ACCPAY
       end
 
       it "can have its type set to ACCREC" do
-        invoice = Invoice.new(type: Invoice::ACCREC)
-        invoice.type.should == Invoice::ACCREC
+        invoice = Invoice.new(type: Invoice::Type::ACCREC)
+        invoice.type.should == Invoice::Type::ACCREC
       end
 
       it "cannot have its type set to anything else" do
-        expect { Invoice.new(type: "rubbish") }.to raise_error(Invoice::InvalidType)
+        expect { Invoice.new(type: "rubbish") }.to raise_error(Invoice::Type::Invalid)
       end
     end
 
@@ -103,7 +103,7 @@ module Xeroid::Objects
       end
 
       it "cannot have its status set to anything else" do
-        expect { Invoice.new(status: "Absurd") }.to raise_error(Invoice::InvalidStatus)
+        expect { Invoice.new(status: "Absurd") }.to raise_error(Invoice::Status::Invalid)
       end
     end
   end
