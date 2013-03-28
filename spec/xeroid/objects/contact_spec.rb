@@ -26,5 +26,14 @@ module Xeroid::Objects
     it "has no addresses by default" do
       contact.addresses.should be_instance_of(Contact::EmptyAddresses)
     end
+
+    describe "addresses" do
+      let(:addresses) { stub('Addresses') }
+      let(:attrs) { {addresses: addresses} }
+
+      it "can return its addresses" do
+        contact.addresses.should == addresses
+      end
+    end
   end
 end
