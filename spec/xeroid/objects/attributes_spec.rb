@@ -64,5 +64,33 @@ module Xeroid::Objects
         end
       end
     end
+
+    describe "attributes with a defined set of allowed values" do
+      module ConstrainedValue
+        DRAFT = :draft
+        AUTHORISED = :authorised
+
+        VALID = [DRAFT, AUTHORISED]
+
+        class Invalid < StandardError; end
+      end
+
+      let(:constraint_module) {  }
+      let(:klass) { Class.new { include Attributes; constrained(thing: ConstrainedValue) } }
+
+      it "can have its status set to DRAFT" do
+        invoice = klass.new(thing: ConstrainedValue::DRAFT)
+        invoice.thing.should == ConstrainedValue::DRAFT
+      end
+
+      it "can have its status set to AUTHORISED" do
+        invoice = klass.new(thing: ConstrainedValue::AUTHORISED)
+        invoice.thing.should == ConstrainedValue::AUTHORISED
+      end
+
+      it "cannot have its status set to anything else" do
+        expect { klass.new(thing: "Absurd") }.to raise_error(ConstrainedValue::Invalid)
+      end
+    end
   end
 end

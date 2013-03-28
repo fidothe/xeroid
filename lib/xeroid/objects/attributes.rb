@@ -23,12 +23,21 @@ module Xeroid
           end
         end
 
+        def constrained(names_and_constraints)
+          attr_reader *names_and_constraints.keys
+          @constrained_attrs = names_and_constraints
+        end
+
         def typed_attrs
           @typed_attrs ||= {}
         end
 
         def untyped_attrs
           @untyped_attrs ||= []
+        end
+
+        def constrained_attrs
+          @constrained_attrs ||= {}
         end
 
         private
@@ -47,6 +56,10 @@ module Xeroid
             raise error unless value.instance_of?(type)
             instance_variable_set("@#{key}".to_sym, value)
           when *(self.class.untyped_attrs)
+            instance_variable_set("@#{key}".to_sym, value)
+          when *(self.class.constrained_attrs.keys)
+            constraint_module = self.class.constrained_attrs[key]
+            raise constraint_module::Invalid unless constraint_module::VALID.include?(value)
             instance_variable_set("@#{key}".to_sym, value)
           end
         end
