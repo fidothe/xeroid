@@ -1,17 +1,14 @@
-require 'xeroid/objects/initialize_attributes'
+require 'xeroid/objects/attributes'
 
 module Xeroid
   module Objects
+    class NotABigDecimal < StandardError; end
+
     class LineItem
-      include InitializeAttributes
+      include Attributes
 
-      SIMPLE_ATTRS = [:description, :quantity]
-
-      attr_reader *SIMPLE_ATTRS
-
-      def initialize(attributes)
-        initialize_attributes(attributes, SIMPLE_ATTRS, {})
-      end
+      attribute :description, :quantity
+      big_decimal :unit_amount
     end
   end
 end
