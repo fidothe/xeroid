@@ -23,6 +23,19 @@ module Xeroid::Objects
       it "raises NotABigDecimal if you try to create the attribute with a Float" do
         expect { klass.new(thing: 20.0) }.to raise_error(Attributes::NotABigDecimal)
       end
+
+      describe "passing multiple attribute names" do
+        let(:klass) { Class.new { include Attributes; big_decimal(:this, :that) } }
+        let(:instance) { klass.new(this: BigDecimal.new("10.00"), that: BigDecimal.new("20.00")) }
+
+        it "sets the right value for 'this'" do
+          instance.this.should == BigDecimal.new("10.00")
+        end
+
+        it "sets the right value for 'that'" do
+          instance.that.should == BigDecimal.new("20.00")
+        end
+      end
     end
 
     describe "untyped attributes" do

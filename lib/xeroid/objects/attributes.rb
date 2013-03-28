@@ -10,8 +10,10 @@ module Xeroid
       end
 
       module DefinitionMethods
-        def big_decimal(name)
-          add_typed_attr(name, BigDecimal, NotABigDecimal)
+        def big_decimal(*names)
+          names.each do |name|
+            add_typed_attr(name, BigDecimal, NotABigDecimal)
+          end
         end
 
         def attribute(name)
