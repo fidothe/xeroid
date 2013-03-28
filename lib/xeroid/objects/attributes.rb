@@ -14,8 +14,17 @@ module Xeroid
           add_typed_attr(name, BigDecimal, NotABigDecimal)
         end
 
+        def attribute(name)
+          attr_reader name
+          untyped_attrs << name
+        end
+
         def typed_attrs
           @typed_attrs ||= {}
+        end
+
+        def untyped_attrs
+          @untyped_attrs ||= []
         end
 
         private
@@ -28,9 +37,12 @@ module Xeroid
 
       def initialize(attrs)
         attrs.each do |key, value|
-          if self.class.typed_attrs.keys.include?(key)
+          case key
+          when *(self.class.typed_attrs.keys)
             type, error = self.class.typed_attrs[key]
             raise error unless value.instance_of?(type)
+            instance_variable_set("@#{key}".to_sym, value)
+          when *(self.class.untyped_attrs)
             instance_variable_set("@#{key}".to_sym, value)
           end
         end

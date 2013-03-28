@@ -24,5 +24,19 @@ module Xeroid::Objects
         expect { klass.new(thing: 20.0) }.to raise_error(Attributes::NotABigDecimal)
       end
     end
+
+    describe "untyped attributes" do
+      let(:klass) { Class.new { include Attributes; attribute(:thing) } }
+      
+      it "allows strings" do
+        object = klass.new(thing: "value")
+        object.thing.should == "value"
+      end
+
+      it "allows BigDecimal" do
+        object = klass.new(thing: BigDecimal.new("20.00"))
+        object.thing.should == BigDecimal.new("20.00")
+      end
+    end
   end
 end
