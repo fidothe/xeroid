@@ -102,6 +102,11 @@ module Xeroid::Objects
         invoice.status.should == Invoice::Status::DELETED
       end
 
+      it "can have its status set to PAID" do
+        invoice = Invoice.new(status: Invoice::Status::PAID)
+        invoice.status.should == Invoice::Status::PAID
+      end
+
       it "cannot have its status set to anything else" do
         expect { Invoice.new(status: "Absurd") }.to raise_error(Invoice::Status::Invalid)
       end

@@ -11,8 +11,9 @@ module Xeroid
         AUTHORISED = :authorised
         VOIDED = :voided
         DELETED = :deleted
+        PAID = :deleted
 
-        VALID = [DRAFT, SUBMITTED, AUTHORISED, VOIDED, DELETED]
+        VALID = [DRAFT, SUBMITTED, AUTHORISED, VOIDED, DELETED, PAID]
 
         class Invalid < StandardError; end
       end
