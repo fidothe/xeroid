@@ -70,6 +70,10 @@ module Xeroid::Objects
         invoice = Invoice.new(type: Invoice::ACCREC)
         invoice.type.should == Invoice::ACCREC
       end
+
+      it "cannot have its type set to anything else" do
+        expect { Invoice.new(type: "rubbish") }.to raise_error(Invoice::InvalidType)
+      end
     end
 
     describe "status" do
