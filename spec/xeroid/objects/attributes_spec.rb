@@ -75,7 +75,6 @@ module Xeroid::Objects
         class Invalid < StandardError; end
       end
 
-      let(:constraint_module) {  }
       let(:klass) { Class.new { include Attributes; constrained(thing: ConstrainedValue) } }
 
       it "can have its status set to DRAFT" do
