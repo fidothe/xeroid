@@ -43,6 +43,12 @@ module Xeroid
       def line_amount_type
         LineAmounts::EXCLUSIVE
       end
+
+      def self.new_with_line_items(attributes)
+        line_items = []
+        yield(line_items) if block_given?
+        new(attributes.merge(line_items: line_items))
+      end
     end
   end
 end

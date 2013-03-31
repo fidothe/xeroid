@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'xeroid/objects/invoice'
+require 'xeroid/objects'
 
 module Xeroid::Objects
   describe Invoice do
@@ -109,6 +109,17 @@ module Xeroid::Objects
 
       it "cannot have its status set to anything else" do
         expect { Invoice.new(status: "Absurd") }.to raise_error(Invoice::Status::Invalid)
+      end
+    end
+
+    describe "creating invoice objects" do
+      it "offers a method for creating an invoice given args and a block creating Line Items" do
+        line_item = stub('LineItem')
+        invoice = Invoice.new_with_line_items({}) do |line_items|
+          line_items << line_item
+        end
+
+        invoice.line_items.should == [line_item]
       end
     end
   end
