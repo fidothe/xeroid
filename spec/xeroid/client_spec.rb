@@ -8,7 +8,7 @@ module Xeroid
 
     it "can correctly create an Endpoint for dealing with the /Invoice endpoint" do
       Endpoint.should_receive(:new)
-        .with(stub_auth, [:get, :post, :put], [:id, :invoice_number], [:modified_after, :where, :order])
+        .with(stub_auth, 'Invoice', [:get, :post, :put], [:id, :invoice_number], [:modified_after, :where, :order])
         .and_return(endpoint)
 
       client = Client.new(stub_auth)
