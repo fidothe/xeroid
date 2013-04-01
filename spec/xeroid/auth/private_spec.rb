@@ -1,8 +1,8 @@
 require 'vcr_helper'
 
-require 'xeroid/clients/private'
+require 'xeroid/auth/private'
 
-module Xeroid::Clients
+module Xeroid::Auth
   describe Private do
     let(:credentials) { Credentials.fetch }
     let(:key) { credentials['consumer_key'] }
@@ -10,7 +10,7 @@ module Xeroid::Clients
     let(:private_key_path) { File.expand_path(credentials['private_key'], ENV['HOME']) }
 
     it "can successfully create a client and request details about the current organisation", :vcr do
-      client = Xeroid::Clients::Private.create_client(key, secret, private_key_path)
+      client = Private.create_client(key, secret, private_key_path)
       response = client.get('/api.xro/2.0/Organisation')
       response.code.should == '200'
     end

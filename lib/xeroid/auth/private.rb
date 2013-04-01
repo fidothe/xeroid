@@ -1,7 +1,7 @@
 require 'oauth'
 
 module Xeroid
-  module Clients
+  module Auth
     class Private
       def self.create_client(key, secret, private_key_path)
         consumer_opts = {
