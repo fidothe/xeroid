@@ -7,7 +7,7 @@ describe "Invoices" do
   let(:secret) { credentials['consumer_secret'] }
   let(:private_key_path) { File.expand_path(credentials['private_key'], ENV['HOME']) }
   let(:auth_token) { Xeroid::Auth::Private.create_token(key, secret, private_key_path) }
-  let(:client) { Xeroid.new(auth_token) }
+  let(:client) { Xeroid::Client.new(auth_token) }
 
   describe "fetching a single Invoice" do
   end
