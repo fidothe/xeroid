@@ -26,7 +26,8 @@ module Xeroid
       end
 
       it "cannot make a request to an unsupported HTTP method" do
-        expect { endpoint.fetch_response(:post) }.to raise_error(HTTPMethodNotAllowed)
+        endpoint = Endpoint.new(stub_token, 'Endpoint', [], stub_deserialiser)
+        expect { endpoint.fetch_response(:get) }.to raise_error(HTTPMethodNotAllowed)
       end
     end
 
