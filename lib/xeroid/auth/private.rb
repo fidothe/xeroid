@@ -3,7 +3,7 @@ require 'oauth'
 module Xeroid
   module Auth
     class Private
-      def self.create_client(key, secret, private_key_path)
+      def self.create_token(key, secret, private_key_path)
         consumer_opts = {
           :site => 'https://api.xero.com',
           :signature_method => 'RSA-SHA1',
