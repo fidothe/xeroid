@@ -7,7 +7,7 @@ module Xeroid
     end
 
     def invoices
-      Endpoint.new(@auth_token, 'Invoice', [:get, :post, :put], [:id, :invoice_number], [:modified_after, :where, :order])
+      Endpoint.new(@auth_token, 'Invoice', [:get, :post, :put], Deserialisers::Invoice, Serialisers::Invoice)
     end
   end
 end
