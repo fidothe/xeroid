@@ -1,7 +1,7 @@
 require 'builder'
 
 module Xeroid
-  module Serializers
+  module Serialisers
     class Payment
       def self.serialize(payment)
         xml = Builder::XmlMarkup.new(:indent=>2)

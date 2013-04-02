@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'xeroid/serializers/payment'
+require 'xeroid/serialisers/payment'
 require 'xeroid/objects/account'
 require 'xeroid/objects/invoice'
 require 'xeroid/objects/payment'
@@ -8,7 +8,7 @@ require 'xeroid/objects/payment'
 require 'nokogiri'
 require 'pathname'
 
-module Xeroid::Serializers
+module Xeroid::Serialisers
   if RUBY_PLATFORM == 'java'
     describe Account do
       def schema_dir
