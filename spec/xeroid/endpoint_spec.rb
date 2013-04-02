@@ -23,12 +23,19 @@ module Xeroid
       it "can correctly form the URL for a fetch-one request" do
         stub_token.should_receive(:get).with("#{api_path_prefix}/Endpoint/the_id").and_return(stub_response)
 
-        endpoint.fetch_response(:get, 'the_id').should == stub_response
+        endpoint.fetch_response(:get, id: 'the_id').should == stub_response
       end
 
       it "cannot make a request to an unsupported HTTP method" do
         endpoint = Endpoint.new(stub_token, 'Endpoint', [], stub_deserialiser)
         expect { endpoint.fetch_response(:get) }.to raise_error(HTTPMethodNotAllowed)
+      end
+
+      it "can correctly make a request with a body (e.g. Post)" do
+        endpoint = Endpoint.new(stub_token, 'Endpoint', [:post], stub_deserialiser)
+        stub_token.should_receive(:post).with("#{api_path_prefix}/Endpoint", 'body').and_return(stub_response)
+
+        endpoint.fetch_response(:post, 'body').should == stub_response
       end
     end
 
@@ -44,7 +51,7 @@ module Xeroid
       end
 
       it "deserialises the response correctly for a fetch-one call" do
-        endpoint.stub(:fetch_response).with(:get, 'the_id').and_return(stub_response)
+        endpoint.stub(:fetch_response).with(:get, id: 'the_id').and_return(stub_response)
 
         stub_deserialiser.should_receive(:process_one).with(stub_response).and_return(stub_result)
 
@@ -59,7 +66,7 @@ module Xeroid
       it "serialises an object correctly for a post-one call" do
         serialisation = "Serialised XML document"
         endpoint.stub(:fetch_response).with(:post, serialisation).and_return(stub_response)
-        
+
         stub_serialiser.should_receive(:process_one).with(object).and_return(serialisation)
         stub_deserialiser.should_receive(:process_one).with(stub_response).and_return(stub_result)
 

@@ -22,10 +22,24 @@ module Xeroid
       @deserialiser.process_one(response)
     end
 
-    def fetch_response(method, id=nil)
+    def fetch_response(method, *args)
       raise HTTPMethodNotAllowed if !@allowed_methods.include?(method)
+      body, opts = extract_body_and_opts(args)
+      id = opts[:id]
       path = ['/api.xro/2.0', @path, id].compact.join('/')
-      @auth_token.send(method, path)
+      request_args = [method, path]
+      request_args << body if body
+      @auth_token.send(*request_args)
+    end
+
+    private
+
+    def extract_body_and_opts(args)
+      if args.last.kind_of? Hash
+        opts = args.pop
+        return args.first, opts
+      end
+      return args.first, {}
     end
   end
 
