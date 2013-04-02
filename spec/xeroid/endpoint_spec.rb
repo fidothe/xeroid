@@ -7,6 +7,7 @@ module Xeroid
     let(:stub_token) { stub('Xeroid::Auth::Private') }
     let(:stub_response) { stub('Response') }
     let(:stub_deserialiser) { stub('Xeroid::Deserialisers::Thing') }
+    let(:stub_serialiser) { stub('Xeroid::Serialisers::Thing') }
     let(:stub_result) { stub('Xeroid::Objects::Thing') }
     let(:api_path_prefix) { '/api.xro/2.0' }
 
@@ -48,6 +49,21 @@ module Xeroid
         stub_deserialiser.should_receive(:process_one).with(stub_response).and_return(stub_result)
 
         endpoint.fetch('the_id').should == stub_result
+      end
+    end
+
+    describe "making POST requests" do
+      let(:endpoint) { Endpoint.new(stub_token, 'Endpoint', [:post], stub_deserialiser, stub_serialiser)  }
+      let(:object) { stub('Xeroid::Objects::Thing') }
+
+      it "serialises an object correctly for a post-one call" do
+        serialisation = "Serialised XML document"
+        endpoint.stub(:fetch_response).with(:post, serialisation).and_return(stub_response)
+        
+        stub_serialiser.should_receive(:process_one).with(object).and_return(serialisation)
+        stub_deserialiser.should_receive(:process_one).with(stub_response).and_return(stub_result)
+
+        endpoint.post_one(object).should == stub_result
       end
     end
   end

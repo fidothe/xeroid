@@ -1,10 +1,11 @@
 module Xeroid
   class Endpoint
-    def initialize(auth_token, path, methods, deserialiser)
+    def initialize(auth_token, path, methods, deserialiser, serialiser=nil)
       @auth_token = auth_token
       @path = path
       @allowed_methods = methods
       @deserialiser = deserialiser
+      @serialiser = serialiser
     end
 
     def all
@@ -13,6 +14,12 @@ module Xeroid
 
     def fetch(id)
       @deserialiser.process_one(fetch_response(:get, id))
+    end
+
+    def post_one(object)
+      serialised = @serialiser.process_one(object)
+      response = fetch_response(:post, serialised)
+      @deserialiser.process_one(response)
     end
 
     def fetch_response(method, id=nil)
