@@ -18,6 +18,12 @@ module Xeroid
 
         endpoint.fetch_response(:get).should == stub_response
       end
+
+      it "can correctly form the URL for a fetch-one request" do
+        stub_token.should_receive(:get).with("#{api_path_prefix}/Endpoint/the_id").and_return(stub_response)
+
+        endpoint.fetch_response(:get, 'the_id').should == stub_response
+      end
     end
 
     describe "making GET requests" do

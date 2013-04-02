@@ -12,8 +12,9 @@ module Xeroid
       @deserialiser.process_many(fetch_response)
     end
 
-    def fetch_response(method)
-      @auth_token.send(method, "/api.xro/2.0/#{@path}")
+    def fetch_response(method, id=nil)
+      path = ['/api.xro/2.0', @path, id].compact.join('/')
+      @auth_token.send(method, path)
     end
   end
 
