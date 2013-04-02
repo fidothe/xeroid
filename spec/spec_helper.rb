@@ -23,3 +23,8 @@ module Credentials
     @credentials ||= YAML.load_file(File.expand_path('../credentials.yml', __FILE__))
   end
 end
+
+def read_xml_fixture(name)
+  path = File.expand_path("../fixtures/#{name}.xml", __FILE__)
+  File.read(path)
+end
