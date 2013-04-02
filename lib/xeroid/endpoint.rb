@@ -9,17 +9,17 @@ module Xeroid
     end
 
     def all
-      @deserialiser.process_many(fetch_response(:get))
+      @deserialiser.process_many(fetch_response(:get).body)
     end
 
     def fetch(id)
-      @deserialiser.process_one(fetch_response(:get, id))
+      @deserialiser.process_one(fetch_response(:get, id: id).body)
     end
 
     def post_one(object)
       serialised = @serialiser.process_one(object)
       response = fetch_response(:post, serialised)
-      @deserialiser.process_one(response)
+      @deserialiser.process_one(response.body)
     end
 
     def fetch_response(method, *args)

@@ -5,7 +5,8 @@ require 'xeroid/endpoint'
 module Xeroid
   describe Endpoint do
     let(:stub_token) { stub('Xeroid::Auth::Private') }
-    let(:stub_response) { stub('Response') }
+    let(:stub_response_body) { 'RESPONSE BODY' }
+    let(:stub_response) { stub('Response', :body => stub_response_body) }
     let(:stub_deserialiser) { stub('Xeroid::Deserialisers::Thing') }
     let(:stub_serialiser) { stub('Xeroid::Serialisers::Thing') }
     let(:stub_result) { stub('Xeroid::Objects::Thing') }
@@ -45,7 +46,7 @@ module Xeroid
       it "deserialises the response correctly for a fetch-many call" do
         endpoint.stub(:fetch_response).with(:get).and_return(stub_response)
 
-        stub_deserialiser.should_receive(:process_many).with(stub_response).and_return([stub_result])
+        stub_deserialiser.should_receive(:process_many).with(stub_response_body).and_return([stub_result])
 
         endpoint.all.should == [stub_result]
       end
@@ -53,7 +54,7 @@ module Xeroid
       it "deserialises the response correctly for a fetch-one call" do
         endpoint.stub(:fetch_response).with(:get, id: 'the_id').and_return(stub_response)
 
-        stub_deserialiser.should_receive(:process_one).with(stub_response).and_return(stub_result)
+        stub_deserialiser.should_receive(:process_one).with(stub_response_body).and_return(stub_result)
 
         endpoint.fetch('the_id').should == stub_result
       end
@@ -68,7 +69,7 @@ module Xeroid
         endpoint.stub(:fetch_response).with(:post, serialisation).and_return(stub_response)
 
         stub_serialiser.should_receive(:process_one).with(object).and_return(serialisation)
-        stub_deserialiser.should_receive(:process_one).with(stub_response).and_return(stub_result)
+        stub_deserialiser.should_receive(:process_one).with(stub_response_body).and_return(stub_result)
 
         endpoint.post_one(object).should == stub_result
       end
