@@ -4,16 +4,16 @@ require 'nokogiri'
 module Xeroid
   module Deserialisers
     class Invoice
-      def self.process_one(xml)
+      def self.deserialise_one(xml)
         doc = Nokogiri::XML(xml)
-        new(doc).process
+        new(doc).deserialise
       end
 
       def initialize(document)
         @document = document
       end
 
-      def process
+      def deserialise
         attributes = {}
         # core attributes
         attributes[:id] = @document.xpath('/Invoices/Invoice/InvoiceID').text
