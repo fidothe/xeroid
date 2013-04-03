@@ -17,6 +17,7 @@ RSpec.configure do |config|
 end
 
 require 'yaml'
+require 'pathname'
 
 module Credentials
   def self.fetch
@@ -27,4 +28,8 @@ end
 def read_xml_fixture(name)
   path = File.expand_path("../fixtures/#{name}.xml", __FILE__)
   File.read(path)
+end
+
+def schema_dir
+  Pathname.new(File.expand_path("../../vendor/XeroAPI-Schemas/v2.00", __FILE__))
 end
