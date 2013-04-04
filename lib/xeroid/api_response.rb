@@ -1,10 +1,23 @@
 module Xeroid
+  module Deserialisers
+    class APIException
+    end
+  end
+
   class APIResponse
     OKAY = 0
+    API_EXCEPTION = 1
 
     def self.handle_one_response(deserialiser, http_response)
-      object = deserialiser.deserialise_one(http_response.body)
-      new(object, status: OKAY)
+      case http_response.code
+      when "200"
+        object = deserialiser.deserialise_one(http_response.body)
+        status = OKAY
+      when "400"
+        object = ::Xeroid::Deserialisers::APIException.deserialise(http_response.body)
+        status = API_EXCEPTION
+      end
+      new(object, status: status)
     end
 
     def self.handle_many_response(deserialiser, http_response)

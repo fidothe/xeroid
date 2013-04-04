@@ -28,5 +28,17 @@ module Xeroid
         APIResponse.handle_many_response(deserialiser, http_response).should == [response]
       end
     end
+
+    context "HTTP 400 response" do
+      let(:http_response) { stub("Net::HTTPResponse", code: "400", body: response_body) }
+
+      it "can handle an unsuccessful response (400 implies single object)" do
+        Xeroid::Deserialisers::APIException.should_receive(:deserialise).with(response_body).and_return(object)
+
+        APIResponse.should_receive(:new).with(object, status: APIResponse::API_EXCEPTION).and_return(response)
+
+        APIResponse.handle_one_response(deserialiser, http_response).should == response
+      end
+    end
   end
 end
