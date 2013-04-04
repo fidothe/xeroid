@@ -1,4 +1,6 @@
 require 'xeroid/endpoint'
+require 'xeroid/deserialisers'
+require 'xeroid/serialisers'
 
 module Xeroid
   class Client

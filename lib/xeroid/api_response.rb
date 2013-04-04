@@ -1,9 +1,6 @@
-module Xeroid
-  module Deserialisers
-    class APIException
-    end
-  end
+require 'xeroid/deserialisers/api_exception'
 
+module Xeroid
   class APIResponse
     OKAY = 0
     API_EXCEPTION = 1
