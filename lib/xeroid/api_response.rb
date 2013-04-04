@@ -31,5 +31,9 @@ module Xeroid
       @object = object
       @status = status
     end
+
+    def okay?
+      status === OKAY
+    end
   end
 end

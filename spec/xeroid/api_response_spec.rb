@@ -51,6 +51,10 @@ module Xeroid
       it "can return their object" do
         response.object.should == object
       end
+
+      it "reports that it's okay" do
+        response.okay?.should be_true
+      end
     end
   end
 end
