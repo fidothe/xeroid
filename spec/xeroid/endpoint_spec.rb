@@ -34,7 +34,7 @@ module Xeroid
 
       it "can correctly make a request with a body (e.g. Post)" do
         endpoint = Endpoint.new(stub_token, 'Endpoint', [:post], stub_deserialiser)
-        stub_token.should_receive(:post).with("#{api_path_prefix}/Endpoint", 'body').and_return(stub_http_response)
+        stub_token.should_receive(:post).with("#{api_path_prefix}/Endpoint", {'xml' => 'body'}).and_return(stub_http_response)
 
         endpoint.fetch_response(:post, 'body').should == stub_http_response
       end

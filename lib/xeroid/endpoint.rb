@@ -26,11 +26,12 @@ module Xeroid
 
     def fetch_response(method, *args)
       raise HTTPMethodNotAllowed if !@allowed_methods.include?(method)
+
       body, opts = extract_body_and_opts(args)
       id = opts[:id]
       path = ['/api.xro/2.0', @path, id].compact.join('/')
       request_args = [method, path]
-      request_args << body if body
+      request_args << {'xml' => body} if body
       @auth_token.send(*request_args)
     end
 
