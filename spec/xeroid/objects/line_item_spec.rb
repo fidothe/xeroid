@@ -1,12 +1,13 @@
 require 'spec_helper'
 
-require 'xeroid/objects/line_item'
+require 'xeroid/objects'
 require 'bigdecimal'
 
 module Xeroid::Objects
   describe LineItem do
+    let(:account) { Account.new(code: "200") }
     let(:unit_amount) { BigDecimal.new('10.00') }
-    let(:attrs) { {description: 'The line item', quantity: 5, unit_amount: unit_amount} }
+    let(:attrs) { {description: 'The line item', quantity: 5, unit_amount: unit_amount, account: account} }
     let(:line_item) { LineItem.new(attrs) }
 
     it "can return its description" do
@@ -23,6 +24,10 @@ module Xeroid::Objects
 
     it "does not accept a non-BigDecimal unit amount" do
       expect { LineItem.new(unit_amount: "10.00") }.to raise_error(Attributes::NotABigDecimal)
+    end
+
+    it "can return its account" do
+      line_item.account.should == account
     end
   end
 end
