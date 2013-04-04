@@ -17,12 +17,12 @@ module Xeroid
         object = ::Xeroid::Deserialisers::APIException.deserialise(http_response.body)
         status = API_EXCEPTION
       end
-      new(object, status: status)
+      new(object, status)
     end
 
     def self.handle_many_response(deserialiser, http_response)
       objects = deserialiser.deserialise_many(http_response.body)
-      objects.collect { |object| new(object, status: OKAY) }
+      objects.collect { |object| new(object, OKAY) }
     end
 
     attr_reader :object, :status

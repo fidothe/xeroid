@@ -15,7 +15,7 @@ module Xeroid
       it "can handle a successful API response where the expected output is a single object" do
         deserialiser.stub(:deserialise_one).with(response_body).and_return(object)
 
-        APIResponse.should_receive(:new).with(object, status: APIResponse::OKAY).and_return(response)
+        APIResponse.should_receive(:new).with(object, APIResponse::OKAY).and_return(response)
 
         APIResponse.handle_one_response(deserialiser, http_response).should == response
       end
@@ -23,7 +23,7 @@ module Xeroid
       it "can handle a successful API response to a GET where the expected output is many objects" do
         deserialiser.stub(:deserialise_many).with(response_body).and_return([object])
 
-        APIResponse.should_receive(:new).with(object, status: APIResponse::OKAY).and_return(response)
+        APIResponse.should_receive(:new).with(object, APIResponse::OKAY).and_return(response)
 
         APIResponse.handle_many_response(deserialiser, http_response).should == [response]
       end
@@ -35,7 +35,7 @@ module Xeroid
       it "can handle an unsuccessful response (400 implies single object)" do
         Xeroid::Deserialisers::APIException.should_receive(:deserialise).with(response_body).and_return(object)
 
-        APIResponse.should_receive(:new).with(object, status: APIResponse::API_EXCEPTION).and_return(response)
+        APIResponse.should_receive(:new).with(object, APIResponse::API_EXCEPTION).and_return(response)
 
         APIResponse.handle_one_response(deserialiser, http_response).should == response
       end
