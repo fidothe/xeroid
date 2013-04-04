@@ -6,5 +6,10 @@ module Xeroid
       object = deserialiser.deserialise_one(http_response.body)
       new(object, status: OKAY)
     end
+
+    def self.handle_many_response(deserialiser, http_response)
+      objects = deserialiser.deserialise_many(http_response.body)
+      objects.collect { |object| new(object, status: OKAY) }
+    end
   end
 end
