@@ -55,6 +55,13 @@ module Xeroid
       it "reports that it's okay" do
         response.okay?.should be_true
       end
+
+      context "instances that are not okay" do
+        it "reports that it's not okay" do
+          response = APIResponse.new(object, APIResponse::API_EXCEPTION)
+          response.okay?.should be_false
+        end
+      end
     end
   end
 end
