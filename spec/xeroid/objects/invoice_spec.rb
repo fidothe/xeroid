@@ -112,6 +112,21 @@ module Xeroid::Objects
       end
     end
 
+    describe "currency values" do
+      let(:a_tenner) { BigDecimal.new("10.00") }
+
+      [:sub_total, :total_tax, :total].each do |attr|
+        it "can have #{attr} set to a decimal" do
+          invoice = Invoice.new(attr => a_tenner)
+          invoice.send(attr).should == a_tenner
+        end
+
+        it "cannot have its #{attr} set to a string" do
+          expect { Invoice.new(attr => "10") }.to raise_error(Xeroid::Objects::Attributes::NotABigDecimal)
+        end
+      end
+    end
+
     describe "creating invoice objects" do
       it "offers a method for creating an invoice given args and a block creating Line Items" do
         line_item = stub('LineItem')

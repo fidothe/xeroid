@@ -35,6 +35,7 @@ module Xeroid
 
       attribute :id, :contact, :line_items, :date, :due_date
       constrained :type => Type, :status => Status
+      big_decimal :total, :sub_total, :total_tax
 
       def status
         @status ||= Status::DRAFT
