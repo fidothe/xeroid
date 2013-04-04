@@ -1,3 +1,5 @@
+require 'xeroid/api_response'
+
 module Xeroid
   class Endpoint
     def initialize(auth_token, path, methods, deserialiser, serialiser=nil)
@@ -9,17 +11,17 @@ module Xeroid
     end
 
     def all
-      @deserialiser.deserialise_many(fetch_response(:get).body)
+      APIResponse.handle_many_response(@deserialiser, fetch_response(:get))
     end
 
     def fetch(id)
-      @deserialiser.deserialise_one(fetch_response(:get, id: id).body)
+      APIResponse.handle_one_response(@deserialiser, fetch_response(:get, id: id))
     end
 
     def post_one(object)
       serialised = @serialiser.serialise_one(object)
       response = fetch_response(:post, serialised)
-      @deserialiser.deserialise_one(response.body)
+      APIResponse.handle_one_response(@deserialiser, response)
     end
 
     def fetch_response(method, *args)
