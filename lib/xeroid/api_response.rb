@@ -24,5 +24,12 @@ module Xeroid
       objects = deserialiser.deserialise_many(http_response.body)
       objects.collect { |object| new(object, status: OKAY) }
     end
+
+    attr_reader :object, :status
+
+    def initialize(object, status)
+      @object = object
+      @status = status
+    end
   end
 end

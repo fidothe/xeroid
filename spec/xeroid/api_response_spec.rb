@@ -40,5 +40,17 @@ module Xeroid
         APIResponse.handle_one_response(deserialiser, http_response).should == response
       end
     end
+
+    describe "instances" do
+      let(:response) { APIResponse.new(object, APIResponse::OKAY) }
+
+      it "can return their status" do
+        response.status.should == APIResponse::OKAY
+      end
+
+      it "can return their object" do
+        response.object.should == object
+      end
+    end
   end
 end
