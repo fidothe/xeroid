@@ -55,8 +55,8 @@ module Xeroid::Objects
         invoice.due_date.should == due_date
       end
 
-      it "has a line_amount_type of Invoice::LineAmounts::EXCLUSIVE" do
-        invoice.line_amount_type.should == Invoice::LineAmounts::EXCLUSIVE
+      it "has a line_amount_types of Invoice::LineAmounts::EXCLUSIVE" do
+        invoice.line_amount_types.should == Invoice::LineAmounts::EXCLUSIVE
       end
     end
 

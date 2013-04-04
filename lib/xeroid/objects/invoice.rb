@@ -11,7 +11,7 @@ module Xeroid
         AUTHORISED = :authorised
         VOIDED = :voided
         DELETED = :deleted
-        PAID = :deleted
+        PAID = :paid
 
         VALID = [DRAFT, SUBMITTED, AUTHORISED, VOIDED, DELETED, PAID]
 
@@ -40,7 +40,7 @@ module Xeroid
         @status ||= Status::DRAFT
       end
 
-      def line_amount_type
+      def line_amount_types
         LineAmounts::EXCLUSIVE
       end
 
