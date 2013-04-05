@@ -43,6 +43,12 @@ module Xeroid::Deserialisers
           x.extract_from_mapping({:thing => '/r/null'}, :string, attributes)
           attributes.should_not have_key(:thing)
         end
+
+        it "ignores nil mappings" do
+          attributes = {}
+          x.extract_from_mapping(nil, :string, attributes)
+          attributes.should be_empty
+        end
       end
     end
 

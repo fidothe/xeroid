@@ -45,17 +45,11 @@ module Xeroid
         end
 
         def extract_strings(x, attributes)
-          (@string_mappings || []).each do |attr, xpath|
-            string = x.extract_string(xpath)
-            attributes[attr] = string unless string.nil?
-          end
+          x.extract_from_mapping(@string_mappings, :string, attributes)
         end
 
         def extract_currency(x, attributes)
-          (@currency_mappings || []).each do |attr, xpath|
-            currency = x.extract_currency(xpath)
-            attributes[attr] = currency unless currency.nil?
-          end
+          x.extract_from_mapping(@currency_mappings, :currency, attributes)
         end
       end
 
@@ -65,6 +59,7 @@ module Xeroid
         end
 
         def extract_from_mapping(mapping, type, attributes)
+          return if mapping.nil?
           mapping.each do |attr, xpath|
             value = send("extract_#{type}", xpath)
             attributes[attr] = value unless value.nil?
