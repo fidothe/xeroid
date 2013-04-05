@@ -114,7 +114,10 @@ module Xeroid
         end
 
         def extract_utc_timestamp(xpath)
-          extract_typed(xpath) { |string| Time.xmlschema(string + 'Z') }
+          extract_typed(xpath) { |string| 
+            string = string + 'Z' if string.index('Z').nil?
+            Time.xmlschema(string)
+          }
         end
 
         def extract_value(xpath, values)

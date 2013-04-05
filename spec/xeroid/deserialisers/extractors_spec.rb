@@ -132,11 +132,15 @@ module Xeroid::Deserialisers
     end
 
     describe "UTC timestamp values" do
-      let(:xml) { '<r><a>2013-04-05T06:07:08</a></r>' }
-      let(:klass) { Class.new { include Extractors; object_class OpenStruct; as_utc_timestamp :thing => '/r/a' } }
+      let(:xml) { '<r><a>2013-04-05T06:07:08</a><rfc3339>2013-04-05T06:07:08Z</rfc3339></r>' }
+      let(:klass) { Class.new { include Extractors; object_class OpenStruct; as_utc_timestamp :a => '/r/a', :b => '/r/rfc3339' } }
 
-      it "can extract a value" do
-        klass.deserialise_one(xml).thing.should == Time.utc(2013, 4, 5, 6, 7, 8)
+      it "can extract the usual UpdatedDateUTC style slightly-malformed iso8601 datetime" do
+        klass.deserialise_one(xml).a.should == Time.utc(2013, 4, 5, 6, 7, 8)
+      end
+
+      it "can extract a correctly formed ISO8601/RFC 3339 datetime" do
+        klass.deserialise_one(xml).b.should == Time.utc(2013, 4, 5, 6, 7, 8)
       end
     end
 
