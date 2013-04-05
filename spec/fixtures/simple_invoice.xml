@@ -46,7 +46,7 @@
       <LineAmountTypes>Exclusive</LineAmountTypes>
       <LineItems>
         <LineItem>
-          <Description>Onsite project management </Description>
+          <Description>Onsite project management</Description>
           <Quantity>1.0000</Quantity>
           <UnitAmount>1800.00</UnitAmount>
           <TaxType>OUTPUT</TaxType>
