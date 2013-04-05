@@ -47,14 +47,21 @@ module Xeroid
         def as_value(mappings)
           @value_mappings = mappings
         end
+
+        def child(mappings)
+          @child_mappings = mappings
+        end
       end
 
       module DeserialiseMethods
         def deserialise_one(xml)
           doc = Nokogiri::XML(xml)
+          deserialise_from_root(doc)
+        end
+
+        def deserialise_from_root(doc)
           content_root = doc.xpath(content_node_xpath)
-          extractor = Extractor.new(content_root)
-          deserialise_with_extractor(extractor)
+          deserialise_from_node(content_root)
         end
 
         def deserialise_from_node(node)
@@ -72,6 +79,7 @@ module Xeroid
           extract_dates(x, attributes)
           extract_utc_timestamps(x, attributes)
           extract_values(x, attributes)
+          extract_children(x, attributes)
 
           object_class.new(attributes)
         end
@@ -94,6 +102,10 @@ module Xeroid
 
         def extract_values(x, attributes)
           x.extract_from_mapping(@value_mappings, :value, attributes)
+        end
+
+        def extract_children(x, attributes)
+          x.extract_from_mapping(@child_mappings, :child, attributes)
         end
       end
 
@@ -139,6 +151,12 @@ module Xeroid
 
         def extract_value(xpath, values)
           extract_typed(xpath) { |string| values[string] }
+        end
+
+        def extract_child(xpath, deserialiser)
+          nodes = @document.xpath(xpath)
+          return nil if nodes.empty?
+          deserialiser.deserialise_from_node(nodes)
         end
       end
     end

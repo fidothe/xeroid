@@ -170,6 +170,17 @@ module Xeroid::Deserialisers
       end
     end
 
+    describe "child objects" do
+      let(:xml) { '<r><child><a>Child value</a></child></r>' }
+
+      it "can extract the child successfully" do
+        the_child = Class.new { include Extractors; object_class OpenStruct; as_string :thing => 'a' }
+        parent = Class.new { include Extractors; object_class OpenStruct; child :child => ['/r/child', the_child] }
+        instance = parent.deserialise_one(xml)
+        instance.child.thing.should == 'Child value'
+      end
+    end
+
     describe "deserialising docs with a deeper content root node" do
       let(:xml) { '<wrapper><r><a>A string</a><b>B string</b></r></wrapper>' }
       let(:klass) { Class.new { include Extractors; root_node '/wrapper/r'; object_class OpenStruct; as_string :thing => 'a' } }
