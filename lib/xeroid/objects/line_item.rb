@@ -2,8 +2,6 @@ require 'xeroid/objects/attributes'
 
 module Xeroid
   module Objects
-    class NotABigDecimal < StandardError; end
-
     class LineItem
       include Attributes
 
