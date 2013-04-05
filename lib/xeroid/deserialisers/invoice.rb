@@ -21,24 +21,24 @@ module Xeroid
 
       object_class Objects::Invoice
 
-      as_string   :id => '/Invoices/Invoice/InvoiceID',
-                  :invoice_number => '/Invoices/Invoice/InvoiceNumber',
-                  :currency_code => '/Invoices/Invoice/CurrencyCode'
+      as_string   :id => 'InvoiceID',
+                  :invoice_number => 'InvoiceNumber',
+                  :currency_code => 'CurrencyCode'
 
-      as_currency :sub_total => '/Invoices/Invoice/SubTotal',
-                  :total => '/Invoices/Invoice/Total',
-                  :total_tax => '/Invoices/Invoice/TotalTax',
-                  :amount_due => '/Invoices/Invoice/AmountDue',
-                  :amount_paid => '/Invoices/Invoice/AmountPaid',
-                  :amount_credited => '/Invoices/Invoice/AmountCredited'
+      as_currency :sub_total => 'SubTotal',
+                  :total => 'Total',
+                  :total_tax => 'TotalTax',
+                  :amount_due => 'AmountDue',
+                  :amount_paid => 'AmountPaid',
+                  :amount_credited => 'AmountCredited'
 
-      as_value    :type => ['/Invoices/Invoice/Type', TYPES],
-                  :status => ['/Invoices/Invoice/Status', STATUSES]
+      as_value    :type => ['Type', TYPES],
+                  :status => ['Status', STATUSES]
 
-      as_date     :date => '/Invoices/Invoice/Date',
-                  :due_date => '/Invoices/Invoice/DueDate'
+      as_date     :date => 'Date',
+                  :due_date => 'DueDate'
 
-      as_utc_timestamp :updated_date_utc => '/Invoices/Invoice/UpdatedDateUTC'
+      as_utc_timestamp :updated_date_utc => 'UpdatedDateUTC'
     end
   end
 end

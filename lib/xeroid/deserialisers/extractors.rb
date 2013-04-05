@@ -52,7 +52,8 @@ module Xeroid
       module DeserialiseMethods
         def deserialise_one(xml)
           doc = Nokogiri::XML(xml)
-          extractor = Extractor.new(doc)
+          content_root = doc.xpath(content_node_xpath)
+          extractor = Extractor.new(content_root)
           deserialise(extractor)
         end
 

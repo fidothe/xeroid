@@ -169,5 +169,14 @@ module Xeroid::Deserialisers
         klass.deserialise_one(xml).thing.should == :receivable
       end
     end
+
+    describe "deserialising docs with a deeper content root node" do
+      let(:xml) { '<wrapper><r><a>A string</a><b>B string</b></r></wrapper>' }
+      let(:klass) { Class.new { include Extractors; root_node '/wrapper/r'; object_class OpenStruct; as_string :thing => 'a' } }
+
+      it "can extract a value" do
+        klass.deserialise_one(xml).thing.should == "A string"
+      end
+    end
   end
 end
