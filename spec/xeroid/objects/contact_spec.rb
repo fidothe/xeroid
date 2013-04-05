@@ -4,8 +4,12 @@ require 'xeroid/objects/contact'
 
 module Xeroid::Objects
   describe Contact do
-    let(:attrs) { {name: 'AB Contacts', first_name: 'Albert', last_name: 'Contact', email_address: 'contact@example.com'} }
+    let(:attrs) { {id: 'abcde-12345-abcde-12345', name: 'AB Contacts', first_name: 'Albert', last_name: 'Contact', email_address: 'contact@example.com'} }
     let(:contact) { Contact.new(attrs) }
+
+    it "can return its id" do
+      contact.id.should == 'abcde-12345-abcde-12345'
+    end
 
     it "can return its name" do
       contact.name.should == 'AB Contacts'

@@ -1,0 +1,38 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>ca4c9149-6db0-41c8-869d-c5ec943cf875</Id>
+  <Status>OK</Status>
+  <ProviderName>Xeroid client integration testing</ProviderName>
+  <DateTimeUTC>2013-04-05T17:55:04.9661443Z</DateTimeUTC>
+  <Contacts>
+    <Contact>
+      <ContactID>c710c4b0-fb6b-48b6-b5de-82ed7ffcc6de</ContactID>
+      <ContactStatus>ACTIVE</ContactStatus>
+      <Name>Test Co</Name>
+      <Addresses>
+        <Address>
+          <AddressType>POBOX</AddressType>
+        </Address>
+        <Address>
+          <AddressType>STREET</AddressType>
+        </Address>
+      </Addresses>
+      <Phones>
+        <Phone>
+          <PhoneType>FAX</PhoneType>
+        </Phone>
+        <Phone>
+          <PhoneType>MOBILE</PhoneType>
+        </Phone>
+        <Phone>
+          <PhoneType>DEFAULT</PhoneType>
+        </Phone>
+        <Phone>
+          <PhoneType>DDI</PhoneType>
+        </Phone>
+      </Phones>
+      <UpdatedDateUTC>2013-04-04T15:23:26.987</UpdatedDateUTC>
+      <IsSupplier>true</IsSupplier>
+      <IsCustomer>false</IsCustomer>
+    </Contact>
+  </Contacts>
+</Response>
