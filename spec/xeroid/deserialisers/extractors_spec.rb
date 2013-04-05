@@ -130,5 +130,14 @@ module Xeroid::Deserialisers
         klass.deserialise_one(xml).thing.should == Date.new(2013, 4, 5)
       end
     end
+
+    describe "UTC timestamp values" do
+      let(:xml) { '<r><a>2013-04-05T06:07:08</a></r>' }
+      let(:klass) { Class.new { include Extractors; object_class OpenStruct; as_utc_timestamp :thing => '/r/a' } }
+
+      it "can extract a value" do
+        klass.deserialise_one(xml).thing.should == Time.utc(2013, 4, 5, 6, 7, 8)
+      end
+    end
   end
 end

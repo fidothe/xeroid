@@ -28,6 +28,10 @@ module Xeroid
         def as_date(mappings)
           @date_mappings = mappings
         end
+
+        def as_utc_timestamp(mappings)
+          @utc_timestamp_mappings = mappings
+        end
       end
 
       module DeserialiseMethods
@@ -45,6 +49,7 @@ module Xeroid
           extract_strings(x, attributes)
           extract_currency(x, attributes)
           extract_dates(x, attributes)
+          extract_utc_timestamps(x, attributes)
 
           object_class.new(attributes)
         end
@@ -59,6 +64,10 @@ module Xeroid
 
         def extract_dates(x, attributes)
           x.extract_from_mapping(@date_mappings, :date, attributes)
+        end
+
+        def extract_utc_timestamps(x, attributes)
+          x.extract_from_mapping(@utc_timestamp_mappings, :utc_timestamp, attributes)
         end
       end
 
