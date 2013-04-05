@@ -13,7 +13,7 @@ module Xeroid::Deserialisers
       Invoice.content_node_xpath.should == '/Response/Invoices/Invoice'
     end
 
-    describe "a simple invoice" do
+    describe "processing the basic attributes" do
       let(:result) { Invoice.deserialise_one(read_xml_fixture('simple_invoice')) }
 
       it "correctly extracts the id" do
@@ -77,7 +77,7 @@ module Xeroid::Deserialisers
       end
     end
 
-    describe "processing the contact" do
+    describe "processing the Contact" do
       it "correctly invokes the Contact deserialiser" do
         doc = Nokogiri::XML(read_xml_fixture('simple_invoice'))
         contact = stub("Xeroid::Objects::Contact")
