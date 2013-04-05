@@ -61,6 +61,14 @@ module Xeroid::Deserialisers
         it "can extract a value" do
           x.extract_value('/r/t', values).should == :result
         end
+
+        it "returns nil for a missing value" do
+          x.extract_value('/r/null', values).should be_nil
+        end
+
+        it "returns nil for an incorrect value" do
+          x.extract_value('/r/bad_t', values).should be_nil
+        end
       end
 
       describe "using mappings" do
