@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'date'
 require 'time'
+require 'bigdecimal'
 
 module Xeroid
   module Deserialisers
@@ -11,8 +12,6 @@ module Xeroid
       end
 
       module DSL
-        attr_reader :string_mappings
-
         def object_class(klass = nil)
           return @object_class if klass.nil?
           @object_class = klass
@@ -20,6 +19,10 @@ module Xeroid
 
         def as_string(mappings)
           @string_mappings = mappings
+        end
+
+        def as_currency(mappings)
+          @currency_mappings = mappings
         end
       end
 
@@ -36,14 +39,22 @@ module Xeroid
           attributes = {}
           # core attributes
           extract_strings(x, attributes)
+          extract_currency(x, attributes)
 
           object_class.new(attributes)
         end
 
         def extract_strings(x, attributes)
-          string_mappings.each do |attr, xpath|
+          (@string_mappings || []).each do |attr, xpath|
             string = x.extract_string(xpath)
             attributes[attr] = string unless string.nil?
+          end
+        end
+
+        def extract_currency(x, attributes)
+          (@currency_mappings || []).each do |attr, xpath|
+            currency = x.extract_currency(xpath)
+            attributes[attr] = currency unless currency.nil?
           end
         end
       end
@@ -57,6 +68,12 @@ module Xeroid
           nodes = @document.xpath(xpath)
           return nil if nodes.empty?
           nodes.text
+        end
+
+        def extract_currency(xpath)
+          string = extract_string(xpath)
+          return nil if string.nil?
+          BigDecimal.new(string)
         end
       end
     end
