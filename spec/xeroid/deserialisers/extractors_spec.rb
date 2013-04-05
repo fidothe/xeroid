@@ -7,7 +7,7 @@ require 'xeroid/deserialisers/extractors'
 module Xeroid::Deserialisers
   describe Extractors do
     describe Extractors::Extractor do
-      let(:xml) { '<r><s>A string</s><c>10.00</c></r>' }
+      let(:xml) { '<r><s>A string</s><c>10.00</c><d>2013-04-05T00:00:00</d></r>' }
       let(:doc) { Nokogiri::XML(xml) }
       let(:x) { Extractors::Extractor.new(doc) }
 
@@ -28,6 +28,16 @@ module Xeroid::Deserialisers
 
         it "returns nil for a missing value" do
           x.extract_currency('/r/null').should be_nil
+        end
+      end
+
+      context "date_values" do
+        it "can extract a value" do
+          x.extract_date('/r/d').should == Date.new(2013, 4, 5)
+        end
+
+        it "returns nil for a missing value" do
+          x.extract_date('/r/null').should be_nil
         end
       end
 
@@ -79,6 +89,15 @@ module Xeroid::Deserialisers
 
       it "can extract a value" do
         klass.deserialise_one(xml).thing.should == ten
+      end
+    end
+
+    describe "date attributes" do
+      let(:xml) { '<r><a>2013-04-05T00:00:00</a></r>' }
+      let(:klass) { Class.new { include Extractors; object_class OpenStruct; as_date :thing => '/r/a' } }
+
+      it "can extract a value" do
+        klass.deserialise_one(xml).thing.should == Date.new(2013, 4, 5)
       end
     end
   end

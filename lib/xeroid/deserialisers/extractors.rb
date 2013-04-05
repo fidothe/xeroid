@@ -24,6 +24,10 @@ module Xeroid
         def as_currency(mappings)
           @currency_mappings = mappings
         end
+
+        def as_date(mappings)
+          @date_mappings = mappings
+        end
       end
 
       module DeserialiseMethods
@@ -40,6 +44,7 @@ module Xeroid
           # core attributes
           extract_strings(x, attributes)
           extract_currency(x, attributes)
+          extract_dates(x, attributes)
 
           object_class.new(attributes)
         end
@@ -50,6 +55,10 @@ module Xeroid
 
         def extract_currency(x, attributes)
           x.extract_from_mapping(@currency_mappings, :currency, attributes)
+        end
+
+        def extract_dates(x, attributes)
+          x.extract_from_mapping(@date_mappings, :date, attributes)
         end
       end
 
@@ -76,6 +85,12 @@ module Xeroid
           string = extract_string(xpath)
           return nil if string.nil?
           BigDecimal.new(string)
+        end
+
+        def extract_date(xpath)
+          string = extract_string(xpath)
+          return nil if string.nil?
+          Date.parse(string)
         end
       end
     end
