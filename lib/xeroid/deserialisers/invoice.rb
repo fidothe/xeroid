@@ -1,10 +1,11 @@
 require 'xeroid/objects'
-require 'nokogiri'
-require 'date'
+require 'xeroid/deserialisers/extractors'
 
 module Xeroid
   module Deserialisers
     class Invoice
+      include Extractors
+
       TYPES = {'ACCREC' => Xeroid::Objects::Invoice::Type::ACCREC,
                'ACCPAY' => Xeroid::Objects::Invoice::Type::ACCPAY}
       STATUSES = {
@@ -15,44 +16,27 @@ module Xeroid
         'DELETED' => Xeroid::Objects::Invoice::Status::DELETED,
         'PAID' => Xeroid::Objects::Invoice::Status::PAID
       }
-      def self.deserialise_one(xml)
-        doc = Nokogiri::XML(xml)
-        new(doc).deserialise
-      end
 
-      def initialize(document)
-        @document = document
-      end
+      object_class Objects::Invoice
 
-      def extract_text(xpath)
-        @document.xpath(xpath).text
-      end
+      as_string   :id => '/Invoices/Invoice/InvoiceID',
+                  :invoice_number => '/Invoices/Invoice/InvoiceNumber',
+                  :currency_code => '/Invoices/Invoice/CurrencyCode'
 
-      def extract_value(xpath, values)
-        values[extract_text(xpath)]
-      end
+      as_currency :sub_total => '/Invoices/Invoice/SubTotal',
+                  :total => '/Invoices/Invoice/Total',
+                  :total_tax => '/Invoices/Invoice/TotalTax',
+                  :amount_due => '/Invoices/Invoice/AmountDue',
+                  :amount_paid => '/Invoices/Invoice/AmountPaid',
+                  :amount_credited => '/Invoices/Invoice/AmountCredited'
 
-      def extract_date(xpath)
-        date_string = extract_text(xpath)
-        Date.parse(date_string)
-      end
+      as_value    :type => ['/Invoices/Invoice/Type', TYPES],
+                  :status => ['/Invoices/Invoice/Status', STATUSES]
 
-      def extract_currency(xpath)
-        BigDecimal.new(extract_text(xpath))
-      end
+      as_date     :date => '/Invoices/Invoice/Date',
+                  :due_date => '/Invoices/Invoice/DueDate'
 
-      def deserialise
-        attributes = {}
-        # core attributes
-        attributes[:id] = extract_text('/Invoices/Invoice/InvoiceID')
-        attributes[:type] = extract_value('/Invoices/Invoice/Type', TYPES)
-        attributes[:date] = extract_date('/Invoices/Invoice/Date')
-        attributes[:due_date] = extract_date('/Invoices/Invoice/DueDate')
-        attributes[:status] = extract_value('/Invoices/Invoice/Status', STATUSES)
-        attributes[:sub_total] = extract_currency('/Invoices/Invoice/SubTotal')
-
-        Objects::Invoice.new(attributes)
-      end
+      as_utc_timestamp :updated_date_utc => '/Invoices/Invoice/UpdatedDateUTC'
     end
   end
 end

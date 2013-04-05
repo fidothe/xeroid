@@ -33,9 +33,9 @@ module Xeroid
         class Invalid < StandardError; end
       end
 
-      attribute :id, :contact, :line_items, :date, :due_date
+      attribute :id, :contact, :line_items, :date, :due_date, :currency_code, :invoice_number
       constrained :type => Type, :status => Status
-      big_decimal :total, :sub_total, :total_tax
+      big_decimal :total, :sub_total, :total_tax, :amount, :amount_due, :amount_paid, :amount_credited
       timestamp :updated_date_utc
 
       def status

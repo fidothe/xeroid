@@ -35,15 +35,38 @@ module Xeroid::Deserialisers
       it "correctly extracts the sub total" do
         result.sub_total.should == BigDecimal.new("1800.00")
       end
-    # <TotalTax>225.00</TotalTax>
-    # <Total>2025.00</Total>
-    # <UpdatedDateUTC>2009-08-15T00:18:43.457</UpdatedDateUTC>
-    # <CurrencyCode>NZD</CurrencyCode>
-    # <InvoiceNumber>OIT00546</InvoiceNumber>
-    # <AmountDue>1025.00</AmountDue>
-    # <AmountPaid>1000.00</AmountPaid>
-    # <AmountCredited>0.00</AmountCredited>
 
+      it "correctly extracts the total tax" do
+        result.total_tax.should == BigDecimal.new("225.00")
+      end
+
+      it "correctly extracts the total" do
+        result.total.should == BigDecimal.new("2025.00")
+      end
+
+      it "correctly extracts the updated-at timestamp" do
+        result.updated_date_utc.should == Time.xmlschema('2009-08-15T00:18:43.457Z')
+      end
+
+      it "correctly extracts the currency code" do
+        result.currency_code.should == 'NZD'
+      end
+
+      it "correctly extracts the invoice number" do
+        result.invoice_number.should == 'OIT00546'
+      end
+
+      it "correctly extracts the amount due" do
+        result.amount_due.should == BigDecimal.new("1025.00")
+      end
+
+      it "correctly extracts the amount paid" do
+        result.amount_paid.should == BigDecimal.new("1000.00")
+      end
+
+      it "correctly extracts the amount credited" do
+        result.amount_credited.should == BigDecimal.new("0.0")
+      end
     end
   end
 end

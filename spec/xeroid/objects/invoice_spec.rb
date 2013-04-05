@@ -115,7 +115,7 @@ module Xeroid::Objects
     describe "currency values" do
       let(:a_tenner) { BigDecimal.new("10.00") }
 
-      [:sub_total, :total_tax, :total].each do |attr|
+      [:sub_total, :total_tax, :total, :amount_due, :amount_paid, :amount_credited].each do |attr|
         it "can have #{attr} set to a decimal" do
           invoice = Invoice.new(attr => a_tenner)
           invoice.send(attr).should == a_tenner
@@ -137,6 +137,20 @@ module Xeroid::Objects
 
       it "cannot have its timestamp set to anything else" do
         expect { Invoice.new(updated_date_utc: "Midday") }.to raise_error(Xeroid::Objects::Attributes::NotATime)
+      end
+    end
+
+    describe "the currency code" do
+      it "can have its currency code set" do
+        invoice = Invoice.new(currency_code: "EUR")
+        invoice.currency_code.should == "EUR"
+      end
+    end
+
+    describe "the invoice number" do
+      it "can have its invoice number set" do
+        invoice = Invoice.new(invoice_number: "AB1234")
+        invoice.invoice_number.should == "AB1234"
       end
     end
 
