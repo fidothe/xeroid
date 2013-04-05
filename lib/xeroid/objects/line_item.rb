@@ -6,7 +6,7 @@ module Xeroid
       include Attributes
 
       attribute :description, :quantity, :account
-      big_decimal :unit_amount
+      big_decimal :unit_amount, :line_amount, :tax_amount
     end
   end
 end

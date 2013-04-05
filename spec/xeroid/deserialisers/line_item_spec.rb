@@ -21,6 +21,18 @@ module Xeroid::Deserialisers
       it "can extract the quantity" do
         line_item.quantity.should == 1.0
       end
+
+      it "can extract the unit amount" do
+        line_item.unit_amount.should == BigDecimal.new("1800.00")
+      end
+
+      it "can extract the tax amount" do
+        line_item.tax_amount.should == BigDecimal.new("225.00")
+      end
+
+      it "can extract the line amount" do
+        line_item.line_amount.should == BigDecimal.new("1800.00")
+      end
     end
   end
 end

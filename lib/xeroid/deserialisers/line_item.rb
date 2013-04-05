@@ -9,7 +9,12 @@ module Xeroid
       object_class Objects::LineItem
 
       as_string   :description => 'Description'
+
       as_number   :quantity => 'Quantity'
+
+      as_currency :unit_amount => 'UnitAmount',
+                  :tax_amount => 'TaxAmount',
+                  :line_amount => 'LineAmount'
     end
   end
 end
