@@ -9,6 +9,7 @@ module Xeroid
       object_class Objects::LineItem
 
       as_string   :description => 'Description'
+      as_number   :quantity => 'Quantity'
     end
   end
 end

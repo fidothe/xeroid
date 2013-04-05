@@ -17,6 +17,10 @@ module Xeroid::Deserialisers
       it "can extract the description" do
         line_item.description.should == 'Onsite project management'
       end
+
+      it "can extract the quantity" do
+        line_item.quantity.should == 1.0
+      end
     end
   end
 end
