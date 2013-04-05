@@ -38,9 +38,11 @@ module Xeroid
       as_date     :date => 'Date',
                   :due_date => 'DueDate'
 
-      as_utc_timestamp :updated_date_utc => 'UpdatedDateUTC'
-
       child       :contact => ['Contact', Deserialisers::Contact]
+
+      children    :line_items => ['LineItems/LineItem', Deserialisers::LineItem]
+
+      as_utc_timestamp :updated_date_utc => 'UpdatedDateUTC'
     end
   end
 end

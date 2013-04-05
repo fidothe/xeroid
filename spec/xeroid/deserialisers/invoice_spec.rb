@@ -88,5 +88,17 @@ module Xeroid::Deserialisers
         invoice.contact.should == contact
       end
     end
+
+    describe "processing the LineItems" do
+      it "correctly invokes the LineItem deserialiser" do
+        doc = Nokogiri::XML(read_xml_fixture('simple_invoice'))
+        line_item = stub("Xeroid::Objects::LineItem")
+
+        LineItem.should_receive(:deserialise_many_from_nodeset).with(doc.xpath('/Response/Invoices/Invoice/LineItems/LineItem')).and_return([line_item])
+
+        invoice = Invoice.deserialise_from_root(doc)
+        invoice.line_items.should == [line_item]
+      end
+    end
   end
 end
