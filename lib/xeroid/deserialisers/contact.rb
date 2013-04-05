@@ -10,7 +10,8 @@ module Xeroid
 
       object_class Objects::Contact
 
-      as_string :id => 'ContactID'
+      as_string :id => 'ContactID',
+                :name => 'Name'
     end
   end
 end

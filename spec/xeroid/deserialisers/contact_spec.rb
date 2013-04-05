@@ -13,10 +13,14 @@ module Xeroid::Deserialisers
     end
 
     describe "a simple contact" do
-      let(:result) { Contact.deserialise_one(read_xml_fixture('simple_contact')) }
+      let(:contact) { Contact.deserialise_one(read_xml_fixture('simple_contact')) }
 
       it "correctly extracts the id" do
-        result.id.should == "c710c4b0-fb6b-48b6-b5de-82ed7ffcc6de"
+        contact.id.should == "c710c4b0-fb6b-48b6-b5de-82ed7ffcc6de"
+      end
+
+      it "correctly extracts the name" do
+        contact.name.should == "Test Co"
       end
     end
 
