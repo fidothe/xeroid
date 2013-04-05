@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'xeroid/deserialisers/invoice'
+require 'xeroid/deserialisers'
 require 'bigdecimal'
 
 module Xeroid::Deserialisers
@@ -74,6 +74,18 @@ module Xeroid::Deserialisers
 
       it "correctly extracts the amount credited" do
         result.amount_credited.should == BigDecimal.new("0.0")
+      end
+    end
+
+    describe "processing the contact" do
+      it "correctly invokes the Contact deserialiser" do
+        doc = Nokogiri::XML(read_xml_fixture('simple_invoice'))
+        contact = stub("Xeroid::Objects::Contact")
+
+        Contact.should_receive(:deserialise_from_node).with(doc.xpath('/Response/Invoices/Invoice/Contact')).and_return(contact)
+
+        invoice = Invoice.deserialise_from_root(doc)
+        invoice.contact.should == contact
       end
     end
   end
