@@ -139,5 +139,14 @@ module Xeroid::Deserialisers
         klass.deserialise_one(xml).thing.should == Time.utc(2013, 4, 5, 6, 7, 8)
       end
     end
+
+    describe "Constrained values" do
+      let(:xml) { '<r><a>ACCREC</a></r>' }
+      let(:klass) { Class.new { include Extractors; object_class OpenStruct; as_value :thing => ['/r/a', {'ACCREC' => :receivable}] } }
+
+      it "can extract a value" do
+        klass.deserialise_one(xml).thing.should == :receivable
+      end
+    end
   end
 end

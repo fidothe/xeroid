@@ -32,6 +32,10 @@ module Xeroid
         def as_utc_timestamp(mappings)
           @utc_timestamp_mappings = mappings
         end
+
+        def as_value(mappings)
+          @value_mappings = mappings
+        end
       end
 
       module DeserialiseMethods
@@ -50,6 +54,7 @@ module Xeroid
           extract_currency(x, attributes)
           extract_dates(x, attributes)
           extract_utc_timestamps(x, attributes)
+          extract_values(x, attributes)
 
           object_class.new(attributes)
         end
@@ -69,6 +74,10 @@ module Xeroid
         def extract_utc_timestamps(x, attributes)
           x.extract_from_mapping(@utc_timestamp_mappings, :utc_timestamp, attributes)
         end
+
+        def extract_values(x, attributes)
+          x.extract_from_mapping(@value_mappings, :value, attributes)
+        end
       end
 
       class Extractor
@@ -78,8 +87,8 @@ module Xeroid
 
         def extract_from_mapping(mapping, type, attributes)
           return if mapping.nil?
-          mapping.each do |attr, xpath|
-            value = send("extract_#{type}", xpath)
+          mapping.each do |attr, args|
+            value = send("extract_#{type}", *args)
             attributes[attr] = value unless value.nil?
           end
         end
