@@ -5,6 +5,10 @@ require 'bigdecimal'
 
 module Xeroid::Deserialisers
   describe Invoice do
+    it "reports its object class is Xeroid::Objects::Invoice" do
+      Invoice.object_class.should be(Xeroid::Objects::Invoice)
+    end
+
     it "reports the xpath to the Invoice root node" do
       Invoice.content_node_xpath.should == '/Response/Invoices/Invoice'
     end
