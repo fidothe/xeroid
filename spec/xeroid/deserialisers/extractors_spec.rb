@@ -103,9 +103,21 @@ module Xeroid::Deserialisers
       end
     end
 
-    it "can report the path to the root content node in the response XML" do
-      klass = Class.new { include Extractors; root_node 'Invoices/Invoice' }
-      klass.content_node_xpath.should == '/Response/Invoices/Invoice'
+    describe "reporting the path to the root content node in the response XML" do
+      it "correctly reports given a plain relative path" do
+        klass = Class.new { include Extractors; root_node 'Invoices/Invoice' }
+        klass.content_node_xpath.should == '/Response/Invoices/Invoice'
+      end
+
+      it "correctly reports given a rooted path" do
+        klass = Class.new { include Extractors; root_node '/Invoices/Invoice' }
+        klass.content_node_xpath.should == '/Invoices/Invoice'
+      end
+
+      it "reports / when unused" do
+        klass = Class.new { include Extractors }
+        klass.content_node_xpath.should == '/'
+      end
     end
 
     describe "straight-text attributes" do

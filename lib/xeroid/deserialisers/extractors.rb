@@ -2,6 +2,7 @@ require 'nokogiri'
 require 'date'
 require 'time'
 require 'bigdecimal'
+require 'pathname'
 
 module Xeroid
   module Deserialisers
@@ -13,11 +14,13 @@ module Xeroid
 
       module DSL
         def root_node(xpath)
-          @root_node = xpath
+          path = Pathname.new(xpath)
+          root = Pathname.new('/Response')
+          @root_node = (root + path).to_s
         end
 
         def content_node_xpath
-          "/Response/#{@root_node}"
+          @root_node || '/'
         end
 
         def object_class(klass = nil)
