@@ -55,6 +55,10 @@ module Xeroid
         def child(mappings)
           @child_mappings = mappings
         end
+
+        def children(mappings)
+          @children_mappings = mappings
+        end
       end
 
       module DeserialiseMethods
@@ -73,6 +77,12 @@ module Xeroid
           deserialise_with_extractor(extractor)
         end
 
+        def deserialise_many_from_nodeset(nodeset)
+          nodeset.collect { |node|
+            deserialise_from_node(node)
+          }
+        end
+
         private
 
         def deserialise_with_extractor(x)
@@ -84,7 +94,8 @@ module Xeroid
           extract_dates(x, attributes)
           extract_utc_timestamps(x, attributes)
           extract_values(x, attributes)
-          extract_children(x, attributes)
+          extract_child_objects(x, attributes)
+          extract_children_objects(x, attributes)
 
           object_class.new(attributes)
         end
@@ -113,8 +124,12 @@ module Xeroid
           x.extract_from_mapping(@value_mappings, :value, attributes)
         end
 
-        def extract_children(x, attributes)
+        def extract_child_objects(x, attributes)
           x.extract_from_mapping(@child_mappings, :child, attributes)
+        end
+
+        def extract_children_objects(x, attributes)
+          x.extract_from_mapping(@children_mappings, :children, attributes)
         end
       end
 
@@ -170,6 +185,12 @@ module Xeroid
           nodes = @document.xpath(xpath)
           return nil if nodes.empty?
           deserialiser.deserialise_from_node(nodes)
+        end
+
+        def extract_children(xpath, deserialiser)
+          nodes = @document.xpath(xpath)
+          return nil if nodes.empty?
+          deserialiser.deserialise_many_from_nodeset(nodes)
         end
       end
     end

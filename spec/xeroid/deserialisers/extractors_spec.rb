@@ -200,6 +200,19 @@ module Xeroid::Deserialisers
       end
     end
 
+    describe "list of child objects" do
+      let(:xml) { '<r><child><v>A</v></child><child><v>B</v></child></r>' }
+
+      it "can extract the children successfully" do
+        the_child = Class.new { include Extractors; object_class OpenStruct; as_string :att => 'v' }
+        parent = Class.new { include Extractors; object_class OpenStruct; children :things => ['/r/child', the_child] }
+        instance = parent.deserialise_one(xml)
+        instance.things.length.should == 2
+        instance.things.first.att.should == 'A'
+        instance.things.last.att.should == 'B'
+      end
+    end
+
     describe "deserialising docs with a deeper content root node" do
       let(:xml) { '<wrapper><r><a>A string</a><b>B string</b></r></wrapper>' }
       let(:klass) { Class.new { include Extractors; root_node '/wrapper/r'; object_class OpenStruct; as_string :thing => 'a' } }
@@ -216,6 +229,24 @@ module Xeroid::Deserialisers
 
       it "can extract a value" do
         klass.deserialise_from_node(node).thing.should == "A string"
+      end
+    end
+
+    describe "deserialising many instances from a nodeset" do
+      let(:xml) { '<r><c><v>A string</v></c><c><v>B string</v></c></r>' }
+      let(:klass) { Class.new { include Extractors; object_class OpenStruct; as_string :thing => 'v' } }
+      let(:nodeset) { Nokogiri::XML(xml).xpath('/r/c') }
+
+      it "extracts two instances" do
+        klass.deserialise_many_from_nodeset(nodeset).length.should == 2
+      end
+
+      it "can extract the first instance" do
+        klass.deserialise_many_from_nodeset(nodeset).first.thing.should == "A string"
+      end
+
+      it "can extract the second instance" do
+        klass.deserialise_many_from_nodeset(nodeset).first.thing.should == "A string"
       end
     end
   end
