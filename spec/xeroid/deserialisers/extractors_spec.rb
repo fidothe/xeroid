@@ -8,7 +8,7 @@ module Xeroid::Deserialisers
   describe Extractors do
     describe Extractors::Extractor do
       let(:xml) { '<r>
-        <s>A string</s><c>10.00</c>
+        <s>A string</s><c>10.00</c><n>10</n>
         <d>2013-04-05T00:00:00</d><ut>2013-04-05T06:07:08.901</ut>
         <t>CONSTRAINED</t><bad_t>Unconstrained</bad_t>
       </r>' }
@@ -32,6 +32,16 @@ module Xeroid::Deserialisers
 
         it "returns nil for a missing value" do
           x.extract_currency('/r/null').should be_nil
+        end
+      end
+
+      context "number values" do
+        it "can extract a value" do
+          x.extract_number('/r/n').should == 10.0
+        end
+
+        it "returns nil for a missing value" do
+          x.extract_number('/r/null').should be_nil
         end
       end
 
@@ -136,6 +146,15 @@ module Xeroid::Deserialisers
 
       it "can extract a value" do
         klass.deserialise_one(xml).thing.should == ten
+      end
+    end
+
+    describe "number attributes" do
+      let(:xml) { '<r><a>10.0</a></r>' }
+      let(:klass) { Class.new { include Extractors; object_class OpenStruct; as_number :thing => '/r/a' } }
+
+      it "can extract a value" do
+        klass.deserialise_one(xml).thing.should == 10.0
       end
     end
 

@@ -36,6 +36,10 @@ module Xeroid
           @currency_mappings = mappings
         end
 
+        def as_number(mappings)
+          @number_mappings = mappings
+        end
+
         def as_date(mappings)
           @date_mappings = mappings
         end
@@ -76,6 +80,7 @@ module Xeroid
           # core attributes
           extract_strings(x, attributes)
           extract_currency(x, attributes)
+          extract_numbers(x, attributes)
           extract_dates(x, attributes)
           extract_utc_timestamps(x, attributes)
           extract_values(x, attributes)
@@ -90,6 +95,10 @@ module Xeroid
 
         def extract_currency(x, attributes)
           x.extract_from_mapping(@currency_mappings, :currency, attributes)
+        end
+
+        def extract_numbers(x, attributes)
+          x.extract_from_mapping(@number_mappings, :number, attributes)
         end
 
         def extract_dates(x, attributes)
@@ -136,6 +145,10 @@ module Xeroid
 
         def extract_currency(xpath)
           extract_typed(xpath) { |string| BigDecimal.new(string) }
+        end
+
+        def extract_number(xpath)
+          extract_typed(xpath) { |string| string.to_f }
         end
 
         def extract_date(xpath)
