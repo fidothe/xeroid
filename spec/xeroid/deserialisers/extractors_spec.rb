@@ -178,5 +178,15 @@ module Xeroid::Deserialisers
         klass.deserialise_one(xml).thing.should == "A string"
       end
     end
+
+    describe "deserialising from a node not a string" do
+      let(:xml) { '<wrapper><r><a>A string</a><b>B string</b></r></wrapper>' }
+      let(:klass) { Class.new { include Extractors; object_class OpenStruct; as_string :thing => 'a' } }
+      let(:node) { Nokogiri::XML(xml).xpath('/wrapper/r') }
+
+      it "can extract a value" do
+        klass.deserialise_from_node(node).thing.should == "A string"
+      end
+    end
   end
 end

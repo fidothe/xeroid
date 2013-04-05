@@ -19,5 +19,13 @@ module Xeroid::Deserialisers
         result.id.should == "c710c4b0-fb6b-48b6-b5de-82ed7ffcc6de"
       end
     end
+
+    describe "being processed as a child of a container document (e.g. an Invoice)" do
+      it "can be correctly deserialised" do
+        doc = Nokogiri::XML(read_xml_fixture('simple_invoice'))
+        contact_root = doc.xpath('/Response/Invoices/Invoice/Contact')
+        result = Contact.deserialise_from_node(contact_root)
+      end
+    end
   end
 end

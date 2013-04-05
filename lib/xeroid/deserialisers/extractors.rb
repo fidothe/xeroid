@@ -54,12 +54,17 @@ module Xeroid
           doc = Nokogiri::XML(xml)
           content_root = doc.xpath(content_node_xpath)
           extractor = Extractor.new(content_root)
-          deserialise(extractor)
+          deserialise_with_extractor(extractor)
+        end
+
+        def deserialise_from_node(node)
+          extractor = Extractor.new(node)
+          deserialise_with_extractor(extractor)
         end
 
         private
 
-        def deserialise(x)
+        def deserialise_with_extractor(x)
           attributes = {}
           # core attributes
           extract_strings(x, attributes)
