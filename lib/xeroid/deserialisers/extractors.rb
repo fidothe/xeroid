@@ -42,7 +42,8 @@ module Xeroid
 
         def extract_strings(x, attributes)
           string_mappings.each do |attr, xpath|
-            attributes[attr] = x.extract_string(xpath)
+            string = x.extract_string(xpath)
+            attributes[attr] = string unless string.nil?
           end
         end
       end
@@ -53,7 +54,9 @@ module Xeroid
         end
 
         def extract_string(xpath)
-          @document.xpath(xpath).text
+          nodes = @document.xpath(xpath)
+          return nil if nodes.empty?
+          nodes.text
         end
       end
     end
