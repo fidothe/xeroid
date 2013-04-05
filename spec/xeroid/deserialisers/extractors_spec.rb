@@ -30,6 +30,14 @@ module Xeroid::Deserialisers
           x.extract_currency('/r/null').should be_nil
         end
       end
+
+      describe "using mappings" do
+        it "can extract a specific kind of value using a mapping" do
+          attributes = {}
+          x.extract_from_mapping({:thing => '/r/s'}, :string, attributes)
+          attributes[:thing].should == 'A string'
+        end
+      end
     end
 
     describe "straight-text attributes" do

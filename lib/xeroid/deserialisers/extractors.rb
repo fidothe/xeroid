@@ -64,6 +64,13 @@ module Xeroid
           @document = document
         end
 
+        def extract_from_mapping(mapping, type, attributes)
+          mapping.each do |attr, xpath|
+            value = send("extract_#{type}", xpath)
+            attributes[attr] = value
+          end
+        end
+
         def extract_string(xpath)
           nodes = @document.xpath(xpath)
           return nil if nodes.empty?
