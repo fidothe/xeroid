@@ -12,6 +12,14 @@ module Xeroid
       end
 
       module DSL
+        def root_node(xpath)
+          @root_node = xpath
+        end
+
+        def content_node_xpath
+          "/Response/#{@root_node}"
+        end
+
         def object_class(klass = nil)
           return @object_class if klass.nil?
           @object_class = klass

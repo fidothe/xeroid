@@ -5,6 +5,10 @@ require 'bigdecimal'
 
 module Xeroid::Deserialisers
   describe Invoice do
+    it "reports the xpath to the Invoice root node" do
+      Invoice.content_node_xpath.should == '/Response/Invoices/Invoice'
+    end
+
     describe "a simple invoice" do
       let(:result) { Invoice.deserialise_one(read_xml_fixture('simple_invoice')) }
 

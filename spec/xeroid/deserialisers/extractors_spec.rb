@@ -103,6 +103,11 @@ module Xeroid::Deserialisers
       end
     end
 
+    it "can report the path to the root content node in the response XML" do
+      klass = Class.new { include Extractors; root_node 'Invoices/Invoice' }
+      klass.content_node_xpath.should == '/Response/Invoices/Invoice'
+    end
+
     describe "straight-text attributes" do
       let(:xml) { '<r><a>A string</a><b>B string</b></r>' }
       let(:klass) { Class.new { include Extractors; object_class OpenStruct; as_string :thing => '/r/a' } }

@@ -5,6 +5,8 @@ module Xeroid
   module Deserialisers
     class Invoice
       include Extractors
+      
+      root_node 'Invoices/Invoice'
 
       TYPES = {'ACCREC' => Xeroid::Objects::Invoice::Type::ACCREC,
                'ACCPAY' => Xeroid::Objects::Invoice::Type::ACCPAY}
