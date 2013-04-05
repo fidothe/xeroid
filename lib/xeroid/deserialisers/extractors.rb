@@ -81,16 +81,26 @@ module Xeroid
           nodes.text
         end
 
-        def extract_currency(xpath)
+        def extract_typed(xpath)
           string = extract_string(xpath)
           return nil if string.nil?
-          BigDecimal.new(string)
+          yield(string)
+        end
+
+        def extract_currency(xpath)
+          extract_typed(xpath) { |string| BigDecimal.new(string) }
         end
 
         def extract_date(xpath)
-          string = extract_string(xpath)
-          return nil if string.nil?
-          Date.parse(string)
+          extract_typed(xpath) { |string| Date.parse(string) }
+        end
+
+        def extract_utc_timestamp(xpath)
+          extract_typed(xpath) { |string| Time.xmlschema(string + 'Z') }
+        end
+
+        def extract_value(xpath, values)
+          extract_typed(xpath) { |string| values[string] }
         end
       end
     end

@@ -7,7 +7,11 @@ require 'xeroid/deserialisers/extractors'
 module Xeroid::Deserialisers
   describe Extractors do
     describe Extractors::Extractor do
-      let(:xml) { '<r><s>A string</s><c>10.00</c><d>2013-04-05T00:00:00</d></r>' }
+      let(:xml) { '<r>
+        <s>A string</s><c>10.00</c>
+        <d>2013-04-05T00:00:00</d><ut>2013-04-05T06:07:08.901</ut>
+        <t>CONSTRAINED</t><bad_t>Unconstrained</bad_t>
+      </r>' }
       let(:doc) { Nokogiri::XML(xml) }
       let(:x) { Extractors::Extractor.new(doc) }
 
@@ -31,13 +35,31 @@ module Xeroid::Deserialisers
         end
       end
 
-      context "date_values" do
+      context "date values" do
         it "can extract a value" do
           x.extract_date('/r/d').should == Date.new(2013, 4, 5)
         end
 
         it "returns nil for a missing value" do
           x.extract_date('/r/null').should be_nil
+        end
+      end
+
+      context "UTC timestamp values" do
+        it "can extract a value" do
+          x.extract_utc_timestamp('/r/ut').should == Time.xmlschema("2013-04-05T08:07:08.901+02:00")
+        end
+
+        it "returns nil for a missing value" do
+          x.extract_utc_timestamp('/r/null').should be_nil
+        end
+      end
+
+      context "constrained values" do
+        let(:values) { {'CONSTRAINED' => :result} }
+
+        it "can extract a value" do
+          x.extract_value('/r/t', values).should == :result
         end
       end
 
