@@ -67,7 +67,7 @@ module Xeroid
         def extract_from_mapping(mapping, type, attributes)
           mapping.each do |attr, xpath|
             value = send("extract_#{type}", xpath)
-            attributes[attr] = value
+            attributes[attr] = value unless value.nil?
           end
         end
 

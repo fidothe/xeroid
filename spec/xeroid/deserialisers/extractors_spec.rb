@@ -37,6 +37,12 @@ module Xeroid::Deserialisers
           x.extract_from_mapping({:thing => '/r/s'}, :string, attributes)
           attributes[:thing].should == 'A string'
         end
+
+        it "ignores empty-result xpaths" do
+          attributes = {}
+          x.extract_from_mapping({:thing => '/r/null'}, :string, attributes)
+          attributes.should_not have_key(:thing)
+        end
       end
     end
 
