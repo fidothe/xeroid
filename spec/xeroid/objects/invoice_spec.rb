@@ -127,6 +127,19 @@ module Xeroid::Objects
       end
     end
 
+    describe "the updated-at timestamp" do
+      let(:timestamp) { Time.utc(2013, 4, 5, 12, 4, 54) }
+
+      it "can have its timestamp set to a Time" do
+        invoice = Invoice.new(updated_date_utc: timestamp)
+        invoice.updated_date_utc.should == timestamp
+      end
+
+      it "cannot have its timestamp set to anything else" do
+        expect { Invoice.new(updated_date_utc: "Midday") }.to raise_error(Xeroid::Objects::Attributes::NotATime)
+      end
+    end
+
     describe "creating invoice objects" do
       it "offers a method for creating an invoice given args and a block creating Line Items" do
         line_item = stub('LineItem')

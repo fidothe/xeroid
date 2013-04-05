@@ -4,6 +4,7 @@ module Xeroid
   module Objects
     module Attributes
       class NotABigDecimal < StandardError; end
+      class NotATime < StandardError; end
 
       def self.included(base)
         base.extend(DefinitionMethods)
@@ -13,6 +14,12 @@ module Xeroid
         def big_decimal(*names)
           names.each do |name|
             add_typed_attr(name, BigDecimal, NotABigDecimal)
+          end
+        end
+
+        def timestamp(*names)
+          names.each do |name|
+            add_typed_attr(name, Time, NotATime)
           end
         end
 

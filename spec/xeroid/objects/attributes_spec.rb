@@ -91,5 +91,31 @@ module Xeroid::Objects
         expect { klass.new(thing: "Absurd") }.to raise_error(ConstrainedValue::Invalid)
       end
     end
+
+    describe "Time value attributes (e.g. timestamps)" do
+      let(:klass) { Class.new { include Attributes; timestamp(:thing) } }
+
+      it "sets up an attribute which accepts a Time" do
+        object = klass.new(thing: Time.utc(2013, 4, 5, 6, 7, 8))
+        object.thing.should == Time.utc(2013, 4, 5, 6, 7, 8)
+      end
+
+      it "raises NotATime if you try to create the attribute with a String (even though it's a valid arg for e.g. DateTime.parse)" do
+        expect { klass.new(thing: "2013-04-05T06:07:08Z") }.to raise_error(Attributes::NotATime)
+      end
+
+      describe "passing multiple attribute names" do
+        let(:klass) { Class.new { include Attributes; timestamp(:this, :that) } }
+        let(:instance) { klass.new(this: Time.utc(2012), that: Time.utc(2013)) }
+
+        it "sets the right value for 'this'" do
+          instance.this.should == Time.utc(2012)
+        end
+
+        it "sets the right value for 'that'" do
+          instance.that.should == Time.utc(2013)
+        end
+      end
+    end
   end
 end
