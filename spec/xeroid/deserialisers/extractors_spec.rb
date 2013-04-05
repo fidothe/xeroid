@@ -1,10 +1,37 @@
 require 'spec_helper'
 
 require 'ostruct'
+require 'nokogiri'
 require 'xeroid/deserialisers/extractors'
 
 module Xeroid::Deserialisers
   describe Extractors do
+    describe Extractors::Extractor do
+      let(:xml) { '<r><s>A string</s><c>10.00</c></r>' }
+      let(:doc) { Nokogiri::XML(xml) }
+      let(:x) { Extractors::Extractor.new(doc) }
+
+      context "string values" do
+        it "can extract a value" do
+          x.extract_string('/r/s').should == 'A string'
+        end
+
+        it "returns nil for a missing value" do
+          x.extract_string('/r/null').should be_nil
+        end
+      end
+
+      context "currency values" do
+        it "can extract a value" do
+          x.extract_currency('/r/c').should == BigDecimal.new("10.00")
+        end
+
+        it "returns nil for a missing value" do
+          x.extract_currency('/r/null').should be_nil
+        end
+      end
+    end
+
     describe "straight-text attributes" do
       let(:xml) { '<r><a>A string</a><b>B string</b></r>' }
       let(:klass) { Class.new { include Extractors; object_class OpenStruct; as_string :thing => '/r/a' } }
