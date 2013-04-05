@@ -17,7 +17,7 @@ describe "Invoices" do
     let(:account) { Xeroid::Objects::Account.new(code: "200") }
     let(:simple_line_item) { Xeroid::Objects::LineItem.new(description: "Item", quantity: 1, unit_amount: BigDecimal.new("10.00"), account: account) }
 
-    it "can successfully post a minimal (implied Draft) invoice", :vcr, :wip do
+    it "can successfully post a minimal (implied Draft) invoice", :vcr do
       invoice = Xeroid::Objects::Invoice.new_with_line_items(contact: contact, type: Xeroid::Objects::Invoice::Type::ACCPAY) { |line_items|
         line_items << simple_line_item 
       }
