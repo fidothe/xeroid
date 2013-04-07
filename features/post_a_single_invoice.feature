@@ -9,3 +9,9 @@ Feature: Posting a single invoice
     When I post it to Xero
     Then I should get confirmation it was posted successfully
       And get back an invoice object with IDs
+
+  @vcr
+  Scenario: Posting a new, invalid, invoice
+    Given an invalid draft invoice object
+    When I post it to Xero
+    Then I should get an API exception object back

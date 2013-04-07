@@ -1,11 +1,9 @@
 Given(/^a valid minimal draft invoice object$/) do
-  @contact = Xeroid::Objects::Contact.new(name: "Test Co")
-  @account = Xeroid::Objects::Account.new(code: "200")
-  @simple_line_item = Xeroid::Objects::LineItem.new(description: "Item", quantity: 1, unit_amount: BigDecimal.new("10.00"), account: @account)
+  @invoice = FactoryGirl.build(:minimal_draft_invoice)
+end
 
-  @invoice = Xeroid::Objects::Invoice.new_with_line_items(contact: @contact, type: Xeroid::Objects::Invoice::Type::ACCPAY) { |line_items|
-    line_items << @simple_line_item 
-  }
+Given(/^an invalid draft invoice object$/) do
+  @invoice = FactoryGirl.build(:invalid_draft_invoice)
 end
 
 When(/^I post it to Xero$/) do
@@ -26,3 +24,11 @@ Then(/^get back an invoice object with IDs$/) do
   @returned_invoice.id.should_not be_nil
   @returned_invoice.contact.id.should_not be_nil
 end
+
+Then(/^I should get an API exception object back$/) do
+  @api_response.status.should == Xeroid::APIResponse::API_EXCEPTION
+
+  validation_errors = @api_response.object
+  validation_errors.errors.should_not be_empty
+end
+
