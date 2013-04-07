@@ -16,4 +16,4 @@ test/tmp
 test/version_tmp
 tmp
 spec/credentials.yml
-vcr_cassettes/*
+*/vcr_cassettes/*
