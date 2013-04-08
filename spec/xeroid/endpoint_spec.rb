@@ -38,6 +38,13 @@ module Xeroid
 
         endpoint.fetch_response(:post, 'body').should == stub_http_response
       end
+
+      it "can correctly make a request with a body that includes many things (e.g. Posts, asking for Xero's detailed errors response)" do
+        endpoint = Endpoint.new(stub_token, 'Endpoint', [:post], stub_deserialiser)
+        stub_token.should_receive(:post).with("#{api_path_prefix}/Endpoint?SummarizeErrors=false", {'xml' => 'body'}).and_return(stub_http_response)
+
+        endpoint.fetch_response(:post, 'body', many: true).should == stub_http_response
+      end
     end
 
     describe "making GET requests" do
@@ -76,7 +83,7 @@ module Xeroid
 
       it "serialises objects correctly for a post-many call", :wip do
         serialisation = "Serialised XML document"
-        endpoint.stub(:fetch_response).with(:post, serialisation).and_return(stub_http_response)
+        endpoint.stub(:fetch_response).with(:post, serialisation, {many: true}).and_return(stub_http_response)
 
         stub_serialiser.should_receive(:serialise_many).with([object]).and_return(serialisation)
         APIResponse.should_receive(:handle_many_response).with(stub_deserialiser, stub_http_response).and_return(stub_api_response)

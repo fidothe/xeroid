@@ -1,4 +1,5 @@
 require 'xeroid/api_response'
+require 'uri'
 
 module Xeroid
   class Endpoint
@@ -26,7 +27,7 @@ module Xeroid
 
     def post_many(objects)
       serialised = @serialiser.serialise_many(objects)
-      response = fetch_response(:post, serialised)
+      response = fetch_response(:post, serialised, many: true)
       APIResponse.handle_many_response(@deserialiser, response)
     end
 
@@ -35,13 +36,22 @@ module Xeroid
 
       body, opts = extract_body_and_opts(args)
       id = opts[:id]
-      path = ['/api.xro/2.0', @path, id].compact.join('/')
+      query_params = {}
+      query_params['SummarizeErrors'] = false if opts[:many]
+      path = generate_path(@path, id, query_params)
       request_args = [method, path]
       request_args << {'xml' => body} if body
       @auth_token.send(*request_args)
     end
 
     private
+
+    def generate_path(path, id, query_params)
+      uri_args = {path: ['/api.xro/2.0', path, id].compact.join('/')}
+      uri_args[:query] = URI.encode_www_form(query_params) unless query_params.empty?
+      uri = URI::HTTP.build(uri_args)
+      uri.request_uri
+    end
 
     def extract_body_and_opts(args)
       if args.last.kind_of? Hash
