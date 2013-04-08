@@ -3,7 +3,6 @@ Feature: Posting several invoices
   I want to post several invoices to Xero in a single batch
   In order to get them into Xero as quickly as possible
 
-  @wip
   @vcr
   Scenario: Posting new, minimal, draft invoices
     Given several valid minimal draft invoice objects
