@@ -24,6 +24,12 @@ module Xeroid
       APIResponse.handle_one_response(@deserialiser, response)
     end
 
+    def post_many(objects)
+      serialised = @serialiser.serialise_many(objects)
+      response = fetch_response(:post, serialised)
+      APIResponse.handle_many_response(@deserialiser, response)
+    end
+
     def fetch_response(method, *args)
       raise HTTPMethodNotAllowed if !@allowed_methods.include?(method)
 

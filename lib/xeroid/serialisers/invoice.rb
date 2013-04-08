@@ -6,6 +6,28 @@ module Xeroid
       def self.serialise_one(invoice)
         xml = Builder::XmlMarkup.new(:indent=>2)
         xml.instruct!
+
+        serialise(invoice, xml)
+
+        xml.target!
+      end
+
+      def self.serialise_many(invoices)
+        xml = Builder::XmlMarkup.new(:indent=>2)
+        xml.instruct!
+
+        xml.Invoices do |xml|
+          invoices.each do |invoice|
+            serialise(invoice, xml)
+          end
+        end
+
+        xml.target!
+      end
+
+      private
+
+      def self.serialise(invoice, xml)
         xml.Invoice do |xml|
           xml.Type invoice.type.to_s.upcase
           xml.Contact do |xml|
@@ -25,8 +47,6 @@ module Xeroid
           end
           xml.Status invoice.status.to_s.upcase
         end
-
-        xml.target!
       end
     end
   end

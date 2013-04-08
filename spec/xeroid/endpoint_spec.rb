@@ -81,7 +81,7 @@ module Xeroid
         stub_serialiser.should_receive(:serialise_many).with([object]).and_return(serialisation)
         APIResponse.should_receive(:handle_many_response).with(stub_deserialiser, stub_http_response).and_return(stub_api_response)
 
-        endpoint.post_many(object).should == stub_api_response
+        endpoint.post_many([object]).should == stub_api_response
       end
     end
   end

@@ -1,4 +1,4 @@
-Feature: Posting a single invoice
+Feature: Posting several invoices
   As a user of the Xero API
   I want to post several invoices to Xero in a single batch
   In order to get them into Xero as quickly as possible
