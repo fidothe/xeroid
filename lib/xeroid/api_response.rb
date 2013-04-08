@@ -5,10 +5,14 @@ module Xeroid
     OKAY = 0
     API_EXCEPTION = 1
 
+    def self.content_root_nodeset(content_node_xpath, xml_string)
+      Nokogiri::XML(xml_string).xpath(content_node_xpath)
+    end
+
     def self.handle_one_response(deserialiser, http_response)
       case http_response.code
       when "200"
-        object = deserialiser.deserialise_one(http_response.body)
+        object = deserialiser.deserialise_from_node(content_root_nodeset(deserialiser.content_node_xpath, http_response.body))
         status = OKAY
       when "400"
         object = ::Xeroid::Deserialisers::APIException.deserialise(http_response.body)
@@ -18,8 +22,12 @@ module Xeroid
     end
 
     def self.handle_many_response(deserialiser, http_response)
-      objects = deserialiser.deserialise_many(http_response.body)
-      objects.collect { |object| new(object, OKAY) }
+      nodeset = content_root_nodeset(deserialiser.content_node_xpath, http_response.body)
+      
+      nodeset.collect { |node|
+        object = deserialiser.deserialise_from_node(node)
+        new(object, OKAY)
+      }
     end
 
     attr_reader :object, :status

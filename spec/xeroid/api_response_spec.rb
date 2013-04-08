@@ -4,16 +4,26 @@ require 'xeroid/api_response'
 
 module Xeroid
   describe APIResponse do
-    let(:deserialiser) { stub("Xeroid::Deserialisers::Thing") }
+    let(:deserialiser) { stub("Xeroid::Deserialisers::Thing", :content_node_xpath => '/Some/Api') }
     let(:object) { stub("Xeroid::Objects::Thing") }
     let(:response) { stub("Xeroid::APIResponse") }
     let(:response_body ) { "<Some><Api><XML/></Api></Some>" }
+
+    context "general processing" do
+      it "can fetch a nodeset containing the root node(s) of the content-holding part of the doc" do
+        nodeset = APIResponse.content_root_nodeset('/Some/Api', response_body)
+        nodeset.length.should == 1
+        nodeset.first.name.should == 'Api'
+      end
+    end
 
     context "HTTP 200 response" do
       let(:http_response) { stub("Net::HTTPResponse", code: "200", body: response_body) }
 
       it "can handle a successful API response where the expected output is a single object" do
-        deserialiser.stub(:deserialise_one).with(response_body).and_return(object)
+        nodeset = stub("Nokogiri::XML::Nodeset")
+        APIResponse.stub(:content_root_nodeset).with(deserialiser.content_node_xpath, response_body).and_return(nodeset)
+        deserialiser.stub(:deserialise_from_node).with(nodeset).and_return(object)
 
         APIResponse.should_receive(:new).with(object, APIResponse::OKAY).and_return(response)
 
@@ -21,7 +31,10 @@ module Xeroid
       end
 
       it "can handle a successful API response to a GET where the expected output is many objects" do
-        deserialiser.stub(:deserialise_many).with(response_body).and_return([object])
+        node = stub("Nokogiri::XML::Node")
+        nodeset = [node]
+        APIResponse.stub(:content_root_nodeset).with(deserialiser.content_node_xpath, response_body).and_return(nodeset)
+        deserialiser.stub(:deserialise_from_node).with(node).and_return(object)
 
         APIResponse.should_receive(:new).with(object, APIResponse::OKAY).and_return(response)
 
