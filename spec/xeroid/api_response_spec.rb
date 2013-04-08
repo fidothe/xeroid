@@ -15,14 +15,40 @@ module Xeroid
         nodeset.length.should == 1
         nodeset.first.name.should == 'Api'
       end
+
+      context "checking the status attribute of a content-root element to see if it's okay" do
+        it "reports that status='OK' is okay" do
+          stub_node = {'status' => 'OK'}
+          APIResponse.object_okay?(stub_node).should be_true
+        end
+
+        it "reports that status='error' is not okay" do
+          stub_node = {'status' => 'ERROR'}
+          APIResponse.object_okay?(stub_node).should be_false
+        end
+
+        it "reports that node without status attr is okay" do
+          stub_node = {}
+          APIResponse.object_okay?(stub_node).should be_true
+        end
+      end
     end
 
     context "HTTP 200 response" do
       let(:http_response) { stub("Net::HTTPResponse", code: "200", body: response_body) }
 
+      it "parses the XML and returns the correct nodeset for deserialisation" do
+        nodeset = stub("Nokogiri::XML::Nodeset")
+        deserialiser.stub(:deserialise_from_node).with(nodeset).and_return(object)
+
+        APIResponse.should_receive(:content_root_nodeset).with(deserialiser.content_node_xpath, response_body).and_return(nodeset)
+
+        APIResponse.handle_one_response(deserialiser, http_response)
+      end
+
       it "can handle a successful API response where the expected output is a single object" do
         nodeset = stub("Nokogiri::XML::Nodeset")
-        APIResponse.stub(:content_root_nodeset).with(deserialiser.content_node_xpath, response_body).and_return(nodeset)
+        APIResponse.stub(:content_root_nodeset) { nodeset }
         deserialiser.stub(:deserialise_from_node).with(nodeset).and_return(object)
 
         APIResponse.should_receive(:new).with(object, APIResponse::OKAY).and_return(response)
@@ -30,15 +56,36 @@ module Xeroid
         APIResponse.handle_one_response(deserialiser, http_response).should == response
       end
 
-      it "can handle a successful API response to a GET where the expected output is many objects" do
-        node = stub("Nokogiri::XML::Node")
-        nodeset = [node]
-        APIResponse.stub(:content_root_nodeset).with(deserialiser.content_node_xpath, response_body).and_return(nodeset)
-        deserialiser.stub(:deserialise_from_node).with(node).and_return(object)
+      context "where the expected output is many objects" do
+        let(:node) { stub("Nokogiri::XML::Node") }
 
-        APIResponse.should_receive(:new).with(object, APIResponse::OKAY).and_return(response)
+        it "can handle a successful API response to a GET where the expected output is many objects" do
+          nodeset = [node]
+          APIResponse.stub(:content_root_nodeset) { nodeset }
+          APIResponse.stub(:object_okay?).with(node).and_return(true)
+          deserialiser.stub(:deserialise_from_node).with(node).and_return(object)
 
-        APIResponse.handle_many_response(deserialiser, http_response).should == [response]
+          APIResponse.should_receive(:new).with(object, APIResponse::OKAY).and_return(response)
+
+          APIResponse.handle_many_response(deserialiser, http_response).should == [response]
+        end
+
+        it "can handle an API response with several objects, one of which would cause an HTTP 400 if posted by itself" do
+          bad_node = stub("Nokogiri::XML::Node")
+          nodeset = [node, bad_node]
+          exception_object = stub('Xeroid::Objects::ValidationErrors')
+          exception_response = stub('Xeroid::APIResponse')
+          APIResponse.stub(:content_root_nodeset) { nodeset }
+          APIResponse.stub(:object_okay?).with(node).and_return(true)
+          deserialiser.stub(:deserialise_from_node).with(node).and_return(object)
+          APIResponse.stub(:object_okay?).with(bad_node).and_return(false)
+          Xeroid::Deserialisers::APIException.stub(:deserialise_from_node).with(bad_node).and_return(exception_object)
+
+          APIResponse.should_receive(:new).with(object, APIResponse::OKAY).and_return(response)
+          APIResponse.should_receive(:new).with(exception_object, APIResponse::API_EXCEPTION).and_return(exception_response)
+
+          APIResponse.handle_many_response(deserialiser, http_response).should == [response, exception_response]
+        end
       end
     end
 

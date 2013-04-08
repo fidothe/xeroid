@@ -9,6 +9,11 @@ module Xeroid
       Nokogiri::XML(xml_string).xpath(content_node_xpath)
     end
 
+    def self.object_okay?(node)
+      return true if node['status'].nil?
+      node['status'] == "OK"
+    end
+
     def self.handle_one_response(deserialiser, http_response)
       case http_response.code
       when "200"
@@ -25,8 +30,14 @@ module Xeroid
       nodeset = content_root_nodeset(deserialiser.content_node_xpath, http_response.body)
       
       nodeset.collect { |node|
-        object = deserialiser.deserialise_from_node(node)
-        new(object, OKAY)
+        if object_okay?(node)
+          object = deserialiser.deserialise_from_node(node)
+          status = OKAY
+        else
+          object = ::Xeroid::Deserialisers::APIException.deserialise_from_node(node)
+          status = API_EXCEPTION
+        end
+        new(object, status)
       }
     end
 

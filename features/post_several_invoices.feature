@@ -11,7 +11,6 @@ Feature: Posting several invoices
       And get back invoice objects with IDs
 
   @vcr
-  @wip
   Scenario: Posting several minimal draft invoices together with one that's invalid
     Given several valid minimal draft invoice objects
       And an invalid draft invoice object
