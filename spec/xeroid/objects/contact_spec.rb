@@ -28,7 +28,7 @@ module Xeroid::Objects
     end
 
     it "has no addresses by default" do
-      contact.addresses.should be_instance_of(Contact::EmptyAddresses)
+      contact.addresses.should be_instance_of(EmptyAddresses)
     end
 
     describe "addresses" do

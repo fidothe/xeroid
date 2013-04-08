@@ -1,4 +1,5 @@
 require 'xeroid/objects/attributes'
+require 'xeroid/objects/addresses'
 
 module Xeroid
   module Objects
@@ -6,9 +7,6 @@ module Xeroid
       include Attributes
 
       attribute :id, :name, :first_name, :last_name, :email_address, :addresses
-
-      class EmptyAddresses
-      end
 
       def addresses
         @addresses ||= EmptyAddresses.new
