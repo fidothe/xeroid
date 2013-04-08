@@ -23,7 +23,9 @@ class ValidatorCache
     end
 
     def fetch(name)
-      (@validators || {})[name]
+      validator_doc = (@validators || {})[name]
+      return nil if validator_doc.nil?
+      Nokogiri::XML::Schema.from_document(validator_doc)
     end
 
     def store(name, validator)
@@ -33,7 +35,7 @@ class ValidatorCache
     def [](name)
       validator = fetch(name)
       return validator if validator
-      store(name, Nokogiri::XML::Schema(File.open(schema_dir.join(name))))
+      store(name, Nokogiri::XML(File.open(schema_dir.join(name))))
       fetch(name)
     end
   end
