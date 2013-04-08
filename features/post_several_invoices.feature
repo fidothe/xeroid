@@ -10,3 +10,13 @@ Feature: Posting several invoices
     Then I should get confirmation they were posted successfully
       And get back invoice objects with IDs
 
+  @vcr
+  @wip
+  Scenario: Posting several minimal draft invoices together with one that's invalid
+    Given several valid minimal draft invoice objects
+      And an invalid draft invoice object
+    When I post them to Xero
+    Then I should get confirmation that the valid invoices were posted successfully
+      And get back invoice objects with IDs for the valid invoices
+      And confirmation that the invalid invoice caused a problem
+      And an API exception object for the invalid invoice
