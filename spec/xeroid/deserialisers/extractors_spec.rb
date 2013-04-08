@@ -234,19 +234,28 @@ module Xeroid::Deserialisers
 
     describe "deserialising many instances from a nodeset" do
       let(:xml) { '<r><c><v>A string</v></c><c><v>B string</v></c></r>' }
-      let(:klass) { Class.new { include Extractors; object_class OpenStruct; as_string :thing => 'v' } }
-      let(:nodeset) { Nokogiri::XML(xml).xpath('/r/c') }
+      let(:klass) { Class.new { include Extractors; root_node '/r/c'; object_class OpenStruct; as_string :thing => 'v' } }
 
-      it "extracts two instances" do
-        klass.deserialise_many_from_nodeset(nodeset).length.should == 2
+      context "from a nodeset" do
+        let(:nodeset) { Nokogiri::XML(xml).xpath('/r/c') }
+
+        it "extracts two instances" do
+          klass.deserialise_many_from_nodeset(nodeset).length.should == 2
+        end
+
+        it "can extract the first instance" do
+          klass.deserialise_many_from_nodeset(nodeset).first.thing.should == "A string"
+        end
+
+        it "can extract the second instance" do
+          klass.deserialise_many_from_nodeset(nodeset).first.thing.should == "A string"
+        end
       end
 
-      it "can extract the first instance" do
-        klass.deserialise_many_from_nodeset(nodeset).first.thing.should == "A string"
-      end
-
-      it "can extract the second instance" do
-        klass.deserialise_many_from_nodeset(nodeset).first.thing.should == "A string"
+      context "from a string" do
+        it "correctly hands off to nodeset extraction" do
+          klass.deserialise_many(xml).first.thing.should == "A string"
+        end
       end
     end
   end

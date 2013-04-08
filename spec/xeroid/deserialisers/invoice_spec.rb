@@ -14,7 +14,8 @@ module Xeroid::Deserialisers
     end
 
     describe "processing the basic attributes" do
-      let(:result) { Invoice.deserialise_one(read_xml_fixture('simple_invoice')) }
+      let(:doc) { Nokogiri::XML(read_xml_fixture('simple_invoice')) }
+      let(:result) { Invoice.deserialise_one_from_root(doc) }
 
       it "correctly extracts the id" do
         result.id.should == "243216c5-369e-4056-ac67-05388f86dc81"
@@ -84,7 +85,7 @@ module Xeroid::Deserialisers
 
         Contact.should_receive(:deserialise_from_node).with(doc.xpath('/Response/Invoices/Invoice/Contact')).and_return(contact)
 
-        invoice = Invoice.deserialise_from_root(doc)
+        invoice = Invoice.deserialise_one_from_root(doc)
         invoice.contact.should == contact
       end
     end
@@ -96,7 +97,7 @@ module Xeroid::Deserialisers
 
         LineItem.should_receive(:deserialise_many_from_nodeset).with(doc.xpath('/Response/Invoices/Invoice/LineItems/LineItem')).and_return([line_item])
 
-        invoice = Invoice.deserialise_from_root(doc)
+        invoice = Invoice.deserialise_one_from_root(doc)
         invoice.line_items.should == [line_item]
       end
     end

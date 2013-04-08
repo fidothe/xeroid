@@ -64,12 +64,24 @@ module Xeroid
       module DeserialiseMethods
         def deserialise_one(xml)
           doc = Nokogiri::XML(xml)
-          deserialise_from_root(doc)
+          deserialise_one_from_root(doc)
         end
 
-        def deserialise_from_root(doc)
-          content_root = doc.xpath(content_node_xpath)
-          deserialise_from_node(content_root)
+        def deserialise_many(xml)
+          doc = Nokogiri::XML(xml)
+          deserialise_many_from_root(doc)
+        end
+
+        def content_root(doc)
+          doc.xpath(content_node_xpath)
+        end
+
+        def deserialise_one_from_root(doc)
+          deserialise_from_node(content_root(doc))
+        end
+
+        def deserialise_many_from_root(doc)
+          deserialise_many_from_nodeset(content_root(doc))
         end
 
         def deserialise_from_node(node)
