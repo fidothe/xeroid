@@ -1,11 +1,9 @@
 require 'xeroid/objects/attributes'
+require 'xeroid/objects/address'
 
 module Xeroid
   module Objects
     class EmptyAddresses
-    end
-
-    class EmptyAddress
     end
 
     class Addresses
