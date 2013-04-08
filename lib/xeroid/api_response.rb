@@ -12,12 +12,12 @@ module Xeroid
     def self.handle_one_response(deserialiser, http_response)
       case http_response.code
       when "200"
-        object = deserialiser.deserialise_from_node(content_root_nodeset(deserialiser.content_node_xpath, http_response.body))
         status = OKAY
       when "400"
-        object = ::Xeroid::Deserialisers::APIException.deserialise(http_response.body)
+        deserialiser = ::Xeroid::Deserialisers::APIException
         status = API_EXCEPTION
       end
+      object = deserialiser.deserialise_from_node(content_root_nodeset(deserialiser.content_node_xpath, http_response.body))
       new(object, status)
     end
 

@@ -46,7 +46,9 @@ module Xeroid
       let(:http_response) { stub("Net::HTTPResponse", code: "400", body: response_body) }
 
       it "can handle an unsuccessful response (400 implies single object)" do
-        Xeroid::Deserialisers::APIException.should_receive(:deserialise).with(response_body).and_return(object)
+        nodeset = stub("Nokogiri::XML::Nodeset")
+        APIResponse.stub(:content_root_nodeset).with(Xeroid::Deserialisers::APIException.content_node_xpath, response_body).and_return(nodeset)
+        Xeroid::Deserialisers::APIException.stub(:deserialise_from_node).with(nodeset).and_return(object)
 
         APIResponse.should_receive(:new).with(object, APIResponse::API_EXCEPTION).and_return(response)
 
