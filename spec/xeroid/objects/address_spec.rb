@@ -43,5 +43,21 @@ module Xeroid::Objects
         expect { Address.new(type: "Mailbox") }.to raise_error(Address::Type::Invalid)
       end
     end
+
+    context "address lines" do
+      it "should return [] for address lines by default" do
+        Address.new({}).address_lines.should == []
+      end
+    end
+
+    it "is never empty" do
+      Address.new({}).empty?.should be_false
+    end
+  end
+
+  describe EmptyAddress do
+    it "is always empty" do
+      EmptyAddress.new.empty?.should be_true
+    end
   end
 end

@@ -4,6 +4,9 @@ require 'xeroid/objects/address'
 module Xeroid
   module Objects
     class EmptyAddresses
+      def empty?
+        true
+      end
     end
 
     class Addresses
@@ -12,11 +15,15 @@ module Xeroid
       attribute :pobox, :street
 
       def pobox
-        @pobox || EmptyAddress
+        @pobox || EmptyAddress.new
       end
 
       def street
-        @street || EmptyAddress
+        @street || EmptyAddress.new
+      end
+
+      def empty?
+        @pobox.nil? && @street.nil?
       end
     end
   end
