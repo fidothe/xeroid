@@ -35,6 +35,7 @@ module Xeroid
       def self.serialise(invoice, xml)
         xml.Invoice do |xml|
           xml.Type invoice.type.to_s.upcase
+          xml.InvoiceNumber invoice.invoice_number if invoice.invoice_number
           Xeroid::Serialisers::Contact.serialise(invoice.contact, xml)
           xml.Date invoice.date.strftime("%Y-%m-%dT00:00:00") if invoice.date
           xml.DueDate invoice.due_date.strftime("%Y-%m-%dT00:00:00") if invoice.due_date
