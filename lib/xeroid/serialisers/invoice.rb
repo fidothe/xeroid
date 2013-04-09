@@ -4,6 +4,10 @@ require 'xeroid/serialisers/contact'
 module Xeroid
   module Serialisers
     class Invoice
+      LINE_AMOUNT_TYPES = {
+        exclusive: "Exclusive"
+      }
+
       def self.serialise_one(invoice)
         xml = Builder::XmlMarkup.new(:indent=>2)
         xml.instruct!
@@ -35,6 +39,7 @@ module Xeroid
           xml.Date invoice.date.strftime("%Y-%m-%dT00:00:00") if invoice.date
           xml.DueDate invoice.due_date.strftime("%Y-%m-%dT00:00:00") if invoice.due_date
           xml.Reference invoice.reference if invoice.reference
+          xml.LineAmountTypes LINE_AMOUNT_TYPES[invoice.line_amount_types]
           xml.LineItems do |xml|
             invoice.line_items.each do |line_item|
               xml.LineItem do |xml|
