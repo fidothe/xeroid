@@ -164,5 +164,12 @@ module Xeroid::Objects
         invoice.line_items.should == [line_item]
       end
     end
+
+    context "ACCREC-only attributes" do
+      it "can have its reference set" do
+        invoice = Invoice.new(reference: "QWERTYUIOP")
+        invoice.reference.should == "QWERTYUIOP"
+      end
+    end
   end
 end

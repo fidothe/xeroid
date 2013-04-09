@@ -23,7 +23,8 @@ module Xeroid
 
       as_string   :id => 'InvoiceID',
                   :invoice_number => 'InvoiceNumber',
-                  :currency_code => 'CurrencyCode'
+                  :currency_code => 'CurrencyCode',
+                  :reference => 'Reference'
 
       as_currency :sub_total => 'SubTotal',
                   :total => 'Total',

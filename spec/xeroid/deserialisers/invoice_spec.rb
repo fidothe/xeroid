@@ -76,6 +76,10 @@ module Xeroid::Deserialisers
       it "correctly extracts the amount credited" do
         result.amount_credited.should == BigDecimal.new("0.0")
       end
+
+      it "correctly extracts the reference" do
+        result.reference.should == "PROJECT1"
+      end
     end
 
     describe "processing the Contact" do

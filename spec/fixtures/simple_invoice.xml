@@ -69,6 +69,7 @@
       <CurrencyCode>NZD</CurrencyCode>
       <InvoiceID>243216c5-369e-4056-ac67-05388f86dc81</InvoiceID>
       <InvoiceNumber>OIT00546</InvoiceNumber>
+      <Reference>PROJECT1</Reference>
       <Payments>
         <Payment>
           <Date>2009-09-01T00:00:00</Date>

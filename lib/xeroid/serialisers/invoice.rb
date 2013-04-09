@@ -34,6 +34,7 @@ module Xeroid
           Xeroid::Serialisers::Contact.serialise(invoice.contact, xml)
           xml.Date invoice.date.strftime("%Y-%m-%dT00:00:00") if invoice.date
           xml.DueDate invoice.due_date.strftime("%Y-%m-%dT00:00:00") if invoice.due_date
+          xml.Reference invoice.reference if invoice.reference
           xml.LineItems do |xml|
             invoice.line_items.each do |line_item|
               xml.LineItem do |xml|
