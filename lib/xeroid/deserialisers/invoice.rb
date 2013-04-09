@@ -1,5 +1,7 @@
 require 'xeroid/objects'
 require 'xeroid/deserialisers/extractors'
+require 'xeroid/deserialisers/contact'
+require 'xeroid/deserialisers/line_item'
 
 module Xeroid
   module Deserialisers
