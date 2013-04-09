@@ -25,8 +25,6 @@ module Xeroid
         xml.target!
       end
 
-      private
-
       def self.serialise(contact, xml)
         xml.Contact do |xml|
           xml.Name contact.name
@@ -41,6 +39,8 @@ module Xeroid
           end
         end
       end
+
+      private
 
       def self.serialise_address(xml, address)
         xml.Address do |xml|

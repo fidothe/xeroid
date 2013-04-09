@@ -1,4 +1,5 @@
 require 'builder'
+require 'xeroid/serialisers/contact'
 
 module Xeroid
   module Serialisers
@@ -30,9 +31,7 @@ module Xeroid
       def self.serialise(invoice, xml)
         xml.Invoice do |xml|
           xml.Type invoice.type.to_s.upcase
-          xml.Contact do |xml|
-            xml.Name invoice.contact.name
-          end
+          Xeroid::Serialisers::Contact.serialise(invoice.contact, xml)
           xml.Date invoice.date.strftime("%Y-%m-%dT00:00:00") if invoice.date
           xml.DueDate invoice.due_date.strftime("%Y-%m-%dT00:00:00") if invoice.due_date
           xml.LineItems do |xml|
