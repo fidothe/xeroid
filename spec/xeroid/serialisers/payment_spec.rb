@@ -9,9 +9,14 @@ module Xeroid::Serialisers
       let(:account) { ::Xeroid::Objects::Account.new(code: "NWBC") }
       let(:invoice) { ::Xeroid::Objects::Invoice.new(id: "abcdef12-1234-abcd-1234-abcdef123456") }
 
-      it "produces a valid XML document given a single, minimal, Account object" do
+      it "produces a valid XML document given a single Payment object" do
         payment = ::Xeroid::Objects::Payment.new(invoice: invoice, account: account, amount: BigDecimal.new("10"), date: Date.parse("2012-11-15"))
         Payment.serialise_one(payment).should validate_against("Payment.xsd")
+      end
+
+      it "produces a valid XML document given several Payment objects" do
+        payment = ::Xeroid::Objects::Payment.new(invoice: invoice, account: account, amount: BigDecimal.new("10"), date: Date.parse("2012-11-15"))
+        Payment.serialise_many([payment, payment]).should validate_against("Payment.xsd")
       end
 
       context "payments for a foreign currency invoice" do
