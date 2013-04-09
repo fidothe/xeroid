@@ -22,5 +22,14 @@ module Xeroid
       client = Client.new(stub_auth)
       client.invoices.should == endpoint
     end
+
+    it "can correctly create an Endpoint for dealing with the /Payments endpoint" do
+      Endpoint.should_receive(:new)
+        .with(stub_auth, 'Payments', [:get, :put], Deserialisers::Payment, Serialisers::Payment)
+        .and_return(endpoint)
+
+      client = Client.new(stub_auth)
+      client.payments.should == endpoint
+    end
   end
 end
