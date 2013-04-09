@@ -39,6 +39,8 @@ module Xeroid
               xml.LineItem do |xml|
                 xml.Description line_item.description
                 xml.UnitAmount line_item.unit_amount.to_s("F")
+                xml.TaxAmount line_item.tax_amount.to_s("F") if line_item.tax_amount
+                xml.LineAmount line_item.line_amount.to_s("F") if line_item.line_amount
                 xml.AccountCode line_item.account.code
                 xml.Quantity line_item.quantity.to_s
               end
