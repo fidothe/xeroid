@@ -1,0 +1,56 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>c0a256aa-7ea6-4523-b37a-ef77f22dda5a</Id>
+  <Status>OK</Status>
+  <ProviderName>Xero API Previewer</ProviderName>
+  <DateTimeUTC>2013-04-09T13:22:11.9355267Z</DateTimeUTC>
+  <Payments>
+    <Payment>
+      <PaymentID>dac50c7a-d12b-440c-b907-fae1bbbc36a1</PaymentID>
+      <Date>2013-02-22T00:00:00</Date>
+      <Amount>31.39</Amount>
+      <Reference>Ref 08162</Reference>
+      <CurrencyRate>1.000000</CurrencyRate>
+      <PaymentType>ACCPAYPAYMENT</PaymentType>
+      <Status>AUTHORISED</Status>
+      <UpdatedDateUTC>2008-12-21T00:40:43.007</UpdatedDateUTC>
+      <Account>
+        <AccountID>562555f2-8cde-4ce9-8203-0363922537a4</AccountID>
+        <Code>090</Code>
+        <Name>Business Bank Account</Name>
+      </Account>
+      <Invoice>
+        <Contact>
+          <ContactID>3b30a108-9156-4a42-a893-3bbbe7af1ef8</ContactID>
+          <Name>Xero</Name>
+        </Contact>
+        <Date>2013-01-22T00:00:00</Date>
+        <DueDate>2013-01-22T00:00:00</DueDate>
+        <Status>PAID</Status>
+        <LineAmountTypes>Exclusive</LineAmountTypes>
+        <LineItems>
+          <LineItem>
+            <Description>Monthly subscription</Description>
+            <UnitAmount>29.00</UnitAmount>
+            <TaxType>INPUT</TaxType>
+            <TaxAmount>2.39</TaxAmount>
+            <LineAmount>29.00</LineAmount>
+            <AccountCode>412</AccountCode>
+            <Quantity>1.0000</Quantity>
+          </LineItem>
+        </LineItems>
+        <SubTotal>29.00</SubTotal>
+        <TotalTax>2.39</TotalTax>
+        <Total>31.39</Total>
+        <UpdatedDateUTC>2008-12-20T18:39:15.777</UpdatedDateUTC>
+        <CurrencyCode>USD</CurrencyCode>
+        <FullyPaidOnDate>2013-02-22T00:00:00</FullyPaidOnDate>
+        <Type>ACCPAY</Type>
+        <InvoiceID>3a669bd8-b601-4b9a-81d4-cb03f1af3059</InvoiceID>
+        <InvoiceNumber>AP</InvoiceNumber>
+        <AmountDue>0.00</AmountDue>
+        <AmountPaid>31.39</AmountPaid>
+        <SentToContact>false</SentToContact>
+      </Invoice>
+    </Payment>
+  </Payments>
+</Response>
