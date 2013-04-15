@@ -4,7 +4,7 @@ require 'xeroid/objects/contact'
 
 module Xeroid::Objects
   describe Contact do
-    let(:attrs) { {id: 'abcde-12345-abcde-12345', name: 'AB Contacts', first_name: 'Albert', last_name: 'Contact', email_address: 'contact@example.com'} }
+    let(:attrs) { {id: 'abcde-12345-abcde-12345', name: 'AB Contacts', first_name: 'Albert', last_name: 'Contact', email_address: 'contact@example.com', tax_number: 'GB12341200'} }
     let(:contact) { Contact.new(attrs) }
 
     it "can return its id" do
@@ -25,6 +25,10 @@ module Xeroid::Objects
 
     it "can return the email address of a contact" do
       contact.email_address.should == 'contact@example.com'
+    end
+
+    it "can return its tax number" do
+      contact.tax_number.should == 'GB12341200'
     end
 
     it "has no addresses by default" do
