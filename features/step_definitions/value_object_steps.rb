@@ -13,6 +13,16 @@ Given(/^several valid minimal draft invoice objects$/) do
   (@payload ||= []).concat((0..2).collect { FactoryGirl.build(:minimal_draft_invoice) })
 end
 
+Given(/^a valid contact object$/) do
+  @valid_payload_objects = 1
+  (@payload ||= []) << FactoryGirl.build(:valid_contact)
+end
+
+Then(/^get back a contact object with ID$/) do
+  contact = @api_response.object
+  contact.id.should_not be_nil
+end
+
 Then(/^get back an invoice object with IDs$/) do
   invoice = @api_response.object
   invoice.id.should_not be_nil

@@ -1,10 +1,26 @@
+module EndpointLookup
+  def self.lookup_endpoint(payload_object)
+    case payload_object
+    when Xeroid::Objects::Invoice
+      :invoices
+    when Xeroid::Objects::Contact
+      :contacts
+    end
+  end
+
+  def self.get_endpoint(client, payload_object)
+    client.send(lookup_endpoint(payload_object))
+  end
+end
+
 When(/^I post it to Xero$/) do
   credentials = Credentials.fetch
   private_key_path = File.expand_path(credentials['private_key'], ENV['HOME'])
   auth_token = Xeroid::Auth::Private.create_token(credentials['consumer_key'], credentials['consumer_secret'], private_key_path)
   client = Xeroid::Client.new(auth_token)
 
-  @api_response = client.invoices.post_one(@payload.first)
+
+  @api_response = EndpointLookup.get_endpoint(client, @payload.first).post_one(@payload.first)
 end
 
 Then(/^I should get confirmation it was posted successfully$/) do
@@ -17,7 +33,7 @@ When(/^I post them to Xero$/) do
   auth_token = Xeroid::Auth::Private.create_token(credentials['consumer_key'], credentials['consumer_secret'], private_key_path)
   client = Xeroid::Client.new(auth_token)
 
-  @api_responses = client.invoices.post_many(@payload)
+  @api_responses = EndpointLookup.get_endpoint(client, @payload.first).post_many(@payload)
 end
 
 Then(/^I should get confirmation they were posted successfully$/) do
