@@ -15,5 +15,9 @@ module Xeroid
     def payments
       Endpoint.new(@auth_token, 'Payments', [:get, :put], Deserialisers::Payment, Serialisers::Payment)
     end
+
+    def contacts
+      Endpoint.new(@auth_token, 'Contacts', [:get, :post, :put], Deserialisers::Contact, Serialisers::Contact)
+    end
   end
 end

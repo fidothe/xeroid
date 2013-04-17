@@ -31,5 +31,14 @@ module Xeroid
       client = Client.new(stub_auth)
       client.payments.should == endpoint
     end
+
+    it "can correctly create an Endpoint for dealing with the /Contacts endpoint" do
+      Endpoint.should_receive(:new)
+        .with(stub_auth, 'Contacts', [:get, :post, :put], Deserialisers::Contact, Serialisers::Contact)
+        .and_return(endpoint)
+
+      client = Client.new(stub_auth)
+      client.contacts.should == endpoint
+    end
   end
 end
