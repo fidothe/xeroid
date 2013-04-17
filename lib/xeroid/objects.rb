@@ -7,5 +7,6 @@ module Xeroid
     autoload :Invoice, 'xeroid/objects/invoice'
     autoload :LineItem, 'xeroid/objects/line_item'
     autoload :Payment, 'xeroid/objects/payment'
+    autoload :TaxRate, 'xeroid/objects/tax_rate'
   end
 end
