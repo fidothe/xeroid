@@ -68,3 +68,8 @@ Then(/^an API exception object for the invalid invoice$/) do
     exception.errors.should_not be_empty
   end
 end
+
+Then(/^I should get back valid tax rate objects$/) do
+  tax_rates = @api_responses.select { |response| response.okay? }.collect { |response| response.object }
+  tax_rates.size.should > 0
+end
