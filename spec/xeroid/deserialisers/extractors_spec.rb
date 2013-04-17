@@ -11,6 +11,7 @@ module Xeroid::Deserialisers
         <s>A string</s><c>10.00</c><n>10</n>
         <d>2013-04-05T00:00:00</d><ut>2013-04-05T06:07:08.901</ut>
         <t>CONSTRAINED</t><bad_t>Unconstrained</bad_t>
+        <tr>true</tr><fl>false</fl><bad_bool>nah</bad_bool>
       </r>' }
       let(:doc) { Nokogiri::XML(xml) }
       let(:x) { Extractors::Extractor.new(doc) }
@@ -78,6 +79,20 @@ module Xeroid::Deserialisers
 
         it "returns nil for an incorrect value" do
           x.extract_value('/r/bad_t', values).should be_nil
+        end
+      end
+
+      context "boolean values" do
+        it "can extract true" do
+          x.extract_boolean('/r/tr').should === true
+        end
+
+        it "can extract false" do
+          x.extract_boolean('/r/fl').should === false
+        end
+
+        it "returns nil for an incorrect value" do
+          x.extract_boolean('/r/bad_bool').should be_nil
         end
       end
 
@@ -186,6 +201,15 @@ module Xeroid::Deserialisers
 
       it "can extract a value" do
         klass.deserialise_one(xml).thing.should == :receivable
+      end
+    end
+
+    describe "Boolean values" do
+      let(:xml) { '<r><a>true</a></r>' }
+      let(:klass) { Class.new { include Extractors; object_class OpenStruct; as_boolean :thing => '/r/a' } }
+
+      it "can extract a value" do
+        klass.deserialise_one(xml).thing.should === true
       end
     end
 

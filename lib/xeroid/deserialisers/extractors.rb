@@ -52,6 +52,10 @@ module Xeroid
           @value_mappings = mappings
         end
 
+        def as_boolean(mappings)
+          @boolean_mappings = mappings
+        end
+
         def child(mappings)
           @child_mappings = mappings
         end
@@ -106,6 +110,7 @@ module Xeroid
           extract_dates(x, attributes)
           extract_utc_timestamps(x, attributes)
           extract_values(x, attributes)
+          extract_booleans(x, attributes)
           extract_child_objects(x, attributes)
           extract_children_objects(x, attributes)
 
@@ -134,6 +139,10 @@ module Xeroid
 
         def extract_values(x, attributes)
           x.extract_from_mapping(@value_mappings, :value, attributes)
+        end
+
+        def extract_booleans(x, attributes)
+          x.extract_from_mapping(@boolean_mappings, :boolean, attributes)
         end
 
         def extract_child_objects(x, attributes)
@@ -191,6 +200,19 @@ module Xeroid
 
         def extract_value(xpath, values)
           extract_typed(xpath) { |string| values[string] }
+        end
+
+        def extract_boolean(xpath)
+          extract_typed(xpath) { |string| 
+            case string
+            when 'true'
+              true
+            when 'false'
+              false
+            else
+              nil
+            end
+          }
         end
 
         def extract_child(xpath, deserialiser)
