@@ -1,0 +1,20 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>d2a21a37-dc08-49d8-a453-5651881649a0</Id>
+  <Status>OK</Status>
+  <ProviderName>Xeroid [werkstatt.io]</ProviderName>
+  <DateTimeUTC>2013-04-17T15:18:47.9894262Z</DateTimeUTC>
+  <TaxRates>
+    <TaxRate>
+      <Name>19% VAT on sales</Name>
+      <TaxType>TAX002</TaxType>
+      <CanApplyToAssets>true</CanApplyToAssets>
+      <CanApplyToEquity>true</CanApplyToEquity>
+      <CanApplyToExpenses>true</CanApplyToExpenses>
+      <CanApplyToLiabilities>true</CanApplyToLiabilities>
+      <CanApplyToRevenue>true</CanApplyToRevenue>
+      <DisplayTaxRate>19.0000</DisplayTaxRate>
+      <EffectiveRate>19.0000</EffectiveRate>
+      <Status>ACTIVE</Status>
+    </TaxRate>
+  </TaxRates>
+</Response>

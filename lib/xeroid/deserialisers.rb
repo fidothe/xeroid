@@ -5,6 +5,7 @@ module Xeroid
     autoload :Contact, 'xeroid/deserialisers/contact'
     autoload :Payment, 'xeroid/deserialisers/payment'
     autoload :Account, 'xeroid/deserialisers/account'
+    autoload :TaxRate, 'xeroid/deserialisers/tax_rate'
     autoload :APIException, 'xeroid/deserialisers/api_exception'
   end
 end
