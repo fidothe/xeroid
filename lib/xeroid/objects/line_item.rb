@@ -5,7 +5,7 @@ module Xeroid
     class LineItem
       include Attributes
 
-      attribute :description, :quantity, :account
+      attribute :description, :quantity, :account, :tax_type
       big_decimal :unit_amount, :line_amount, :tax_amount
     end
   end

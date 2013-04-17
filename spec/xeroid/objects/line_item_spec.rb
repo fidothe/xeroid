@@ -9,7 +9,8 @@ module Xeroid::Objects
     let(:unit_amount) { BigDecimal.new('20.00') }
     let(:line_amount) { BigDecimal.new('30.00') }
     let(:tax_amount) { BigDecimal.new('10.00') }
-    let(:attrs) { {description: 'The line item', quantity: 5, unit_amount: unit_amount, line_amount: line_amount, tax_amount: tax_amount, account: account} }
+    let(:tax_rate) { TaxRate.new(tax_type: "TAX002") }
+    let(:attrs) { {description: 'The line item', quantity: 5, unit_amount: unit_amount, line_amount: line_amount, tax_amount: tax_amount, account: account, tax_type: tax_rate} }
     let(:line_item) { LineItem.new(attrs) }
 
     it "can return its description" do
@@ -38,6 +39,10 @@ module Xeroid::Objects
 
     it "can return its account" do
       line_item.account.should == account
+    end
+
+    it "can return its tax type" do
+      line_item.tax_type.should == tax_rate
     end
   end
 end
