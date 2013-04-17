@@ -19,5 +19,9 @@ module Xeroid
     def contacts
       Endpoint.new(@auth_token, 'Contacts', [:get, :post, :put], Deserialisers::Contact, Serialisers::Contact)
     end
+
+    def tax_rates
+      Endpoint.new(@auth_token, 'TaxRates', [:get], Deserialisers::TaxRate)
+    end
   end
 end

@@ -3,7 +3,6 @@ Feature: Fetching all Tax Rates
   I want to fetch all my organisations tax rates
   In order to correctly specify tax rates in my invoices
 
-  @wip
   @vcr
   Scenario: Fetching tax rates
     When I fetch all tax rates from Xero

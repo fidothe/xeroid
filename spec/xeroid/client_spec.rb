@@ -40,5 +40,14 @@ module Xeroid
       client = Client.new(stub_auth)
       client.contacts.should == endpoint
     end
+
+    it "can correctly create an Endpoint for dealing with the /TaxRates endpoint" do
+      Endpoint.should_receive(:new)
+        .with(stub_auth, 'TaxRates', [:get], Deserialisers::TaxRate)
+        .and_return(endpoint)
+
+      client = Client.new(stub_auth)
+      client.tax_rates.should == endpoint
+    end
   end
 end
