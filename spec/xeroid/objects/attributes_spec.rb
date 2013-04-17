@@ -117,5 +117,37 @@ module Xeroid::Objects
         end
       end
     end
+
+    describe "Boolean value attributes" do
+      let(:klass) { Class.new { include Attributes; boolean(:thing) } }
+
+      it "sets up an attribute which accepts a boolean" do
+        object = klass.new(thing: true)
+        object.thing.should === true
+      end
+
+      it "creates the attribute? helper too" do
+        object = klass.new(thing: false)
+        object.thing?.should === false
+      end
+
+      it "raises NotABoolean if you try to create the attribute with a String (even though it's the string 'true')" do
+        expect { klass.new(thing: "true") }.to raise_error(Attributes::NotABoolean)
+      end
+
+      describe "passing multiple attribute names" do
+        let(:klass) { Class.new { include Attributes; boolean(:this, :that) } }
+        let(:instance) { klass.new(this: true, that: false) }
+
+        it "sets the right value for 'this'" do
+          instance.this.should be_true
+        end
+
+        it "sets the right value for 'that'" do
+          instance.that.should be_false
+        end
+      end
+      
+    end
   end
 end

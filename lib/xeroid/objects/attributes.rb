@@ -5,6 +5,7 @@ module Xeroid
     module Attributes
       class NotABigDecimal < StandardError; end
       class NotATime < StandardError; end
+      class NotABoolean < StandardError; end
 
       def self.included(base)
         base.extend(DefinitionMethods)
@@ -20,6 +21,14 @@ module Xeroid
         def timestamp(*names)
           names.each do |name|
             add_typed_attr(name, Time, NotATime)
+          end
+        end
+
+        def boolean(*names)
+          names.each do |name|
+            attr_reader name
+            alias_method "#{name}?".to_sym, name
+            boolean_attrs << name
           end
         end
 
@@ -47,6 +56,10 @@ module Xeroid
           @constrained_attrs ||= {}
         end
 
+        def boolean_attrs
+          @boolean_attrs ||= []
+        end
+
         private
 
         def add_typed_attr(name, type, error)
@@ -67,6 +80,9 @@ module Xeroid
           when *(self.class.constrained_attrs.keys)
             constraint_module = self.class.constrained_attrs[key]
             raise constraint_module::Invalid unless constraint_module::VALID.include?(value)
+            instance_variable_set("@#{key}".to_sym, value)
+          when *(self.class.boolean_attrs)
+            raise NotABoolean unless (value === true || value === false)
             instance_variable_set("@#{key}".to_sym, value)
           end
         end
