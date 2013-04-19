@@ -27,7 +27,8 @@ module Xeroid
 
       def self.serialise(contact, xml)
         xml.Contact do |xml|
-          xml.Name contact.name
+          xml.ContactID contact.id if contact.id
+          xml.Name contact.name if contact.name
           xml.FirstName contact.first_name if contact.first_name
           xml.LastName contact.last_name if contact.last_name
           xml.EmailAddress contact.email_address if contact.email_address

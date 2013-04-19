@@ -8,7 +8,8 @@ module Xeroid
       
       object_class Objects::LineItem
 
-      as_string   :description => 'Description'
+      as_string   :description => 'Description',
+                  :tax_type => 'TaxType'
 
       as_number   :quantity => 'Quantity'
 
